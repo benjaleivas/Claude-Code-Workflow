@@ -1,5 +1,26 @@
 # User-Level Instructions
 
+## Session Start
+
+When a new session begins and the user sends their first message, start your response with a brief workflow orientation:
+
+1. A one-liner acknowledging the workflow is active (agents, commands, hooks loaded)
+2. Classify their request and propose the matching workflow path:
+   - **Feature / non-trivial task** → "I'll enter plan mode. Expect: spec → devil's advocate → blueprint → implement → verify → /review."
+   - **Bug / error / failing tests** → "I'll use the debugger pattern: capture → hypothesize → isolate → root cause → fix. No planning overhead."
+   - **Quick fix / small change** → "Straightforward — I'll make the change, verify, and suggest /review."
+   - **Exploration / prototype** → "I'll suggest /explore to keep this in a sandbox with relaxed gates."
+   - **Risky / data-heavy work** → "Consider /container for an isolated environment."
+   - **Workflow meta-task** → "Working on the workflow itself — I'll modify ~/.claude/ config."
+3. If the project has `.claude/MEMORY.md`, mention relevant [LEARN] entries for the domain.
+
+Keep it to 3-5 lines total. Don't list all available commands — just the ones relevant to THIS task. Then proceed immediately with the work.
+
+Skip this orientation for:
+- Follow-up messages in an ongoing session (only fires on the first message)
+- Continuation sessions (context summaries indicate prior work)
+- When the user's message is a slash command (they already know what they want)
+
 ## Who I Am
 Benjamín Leiva. Solo developer. I work on mobile apps (React Native/Expo), backends (Supabase/Deno), and data projects.
 
