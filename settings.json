@@ -104,6 +104,11 @@
             "type": "prompt",
             "prompt": "A Claude Code session is stopping. Determine if a session log reminder is needed. Say YES only if: (1) plan-mode work was done, (2) significant design decisions were made, or (3) non-obvious debugging insights were discovered. Respond with {\"ok\": true} if no reminder needed, or {\"ok\": false, \"reason\": \"Consider updating the session log — this session involved [brief description]\"} if warranted.",
             "timeout": 15000
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/check-open-pr.sh",
+            "timeout": 10000
           }
         ]
       }

@@ -52,3 +52,44 @@ If the required CLI is not installed:
 ---
 
 If on main/master, warn and stop — don't create a PR/MR from the default branch.
+
+---
+
+## Post-PR Follow-up
+
+After creating the PR/MR and printing the URL, remember to check on it later in this session.
+
+### When to Check
+- After 2-3 more user messages or tasks — not immediately
+- When the user seems to be wrapping up, or before suggesting `/techdebt`
+- If the user explicitly asks about the PR status
+
+### How to Check
+
+**GitHub:**
+```bash
+gh pr view --json state,mergedAt,url --jq '{state: .state, merged: .mergedAt, url: .url}'
+```
+
+**GitLab:**
+```bash
+glab mr view --output json 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps({'state': d['state'], 'url': d['web_url']}))"
+```
+
+### Based on Status
+- **MERGED**: Offer to switch to main and pull:
+  ```
+  "Your PR was merged! Want me to switch to main and pull?"
+  ```
+  If yes: `git checkout main && git pull`. Then ask before deleting the old branch (`git branch -d <branch>`).
+
+- **OPEN**: Mention once, don't nag:
+  ```
+  "FYI, your PR at <url> is still open."
+  ```
+
+- **CLOSED** (not merged): Ask if that was intentional.
+
+### Constraints
+- Only check once per session. Don't repeatedly ask.
+- If context was compressed and you've lost track of the PR, skip — the Stop hook will catch it.
