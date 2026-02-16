@@ -1,0 +1,141 @@
+# Claude Container Management
+# Run `just --list` to see all available recipes.
+
+container_dir := justfile_directory()
+project_dir := container_dir / "projects"
+image_name := "claude-workspace"
+container_prefix := "claude-"
+
+# ─── Setup & Build ──────────────────────────────────
+
+# One-time setup: install Colima + Docker + Just via Homebrew
+setup:
+    @echo "Installing container dependencies..."
+    brew install colima docker just 2>/dev/null || true
+    @echo "Starting Colima VM (4 CPU, 8GB RAM, Apple Silicon)..."
+    colima start --arch aarch64 --cpu 4 --memory 8 --disk 60
+    @echo "Building container image..."
+    just build
+    @echo "✓ Setup complete. Run 'just create <name>' to create your first container."
+
+# Build the container image
+build:
+    docker build -t {{image_name}} {{container_dir}}
+
+# Rebuild without cache
+rebuild:
+    docker build --no-cache -t {{image_name}} {{container_dir}}
+
+# ─── Container Lifecycle ─────────────────────────────
+
+# Create a new project container
+create name *args:
+    @mkdir -p "{{project_dir}}/{{name}}"
+    docker create \
+        --name {{container_prefix}}{{name}} \
+        -v "{{project_dir}}/{{name}}:/workspace" \
+        -v "$HOME/.claude/rules:/home/coder/.claude/rules:ro" \
+        -v "$HOME/.claude/agents:/home/coder/.claude/agents:ro" \
+        -v "$HOME/.claude/commands:/home/coder/.claude/commands:ro" \
+        -v "{{container_dir}}/claude-yolo.md:/home/coder/.claude/CLAUDE.md:ro" \
+        -v "{{container_dir}}/settings-yolo.json:/home/coder/.claude/settings.json:ro" \
+        {{args}} \
+        {{image_name}}
+    @echo "✓ Container '{{name}}' created. Project dir: {{project_dir}}/{{name}}"
+
+# Start a stopped container
+start name:
+    docker start {{container_prefix}}{{name}}
+
+# Stop a running container
+stop name:
+    docker stop {{container_prefix}}{{name}}
+
+# ─── Claude Modes ────────────────────────────────────
+
+# Run Claude in YOLO mode (full permissions, no prompts)
+yolo name:
+    #!/usr/bin/env bash
+    set -e
+    # Start container if not running
+    if ! docker inspect -f '{{{{.State.Running}}}}' {{container_prefix}}{{name}} 2>/dev/null | grep -q true; then
+        docker start {{container_prefix}}{{name}}
+    fi
+    echo "Starting Claude in YOLO mode inside '{{name}}'..."
+    docker exec -it -w /workspace {{container_prefix}}{{name}} claude --dangerously-skip-permissions
+
+# Run Claude in safe mode (normal permissions)
+safe name:
+    #!/usr/bin/env bash
+    set -e
+    # Start container if not running
+    if ! docker inspect -f '{{{{.State.Running}}}}' {{container_prefix}}{{name}} 2>/dev/null | grep -q true; then
+        docker start {{container_prefix}}{{name}}
+    fi
+    echo "Starting Claude in safe mode inside '{{name}}'..."
+    docker exec -it -w /workspace {{container_prefix}}{{name}} claude
+
+# ─── Shell & Utilities ───────────────────────────────
+
+# Open a bash shell inside a container
+shell name:
+    #!/usr/bin/env bash
+    set -e
+    if ! docker inspect -f '{{{{.State.Running}}}}' {{container_prefix}}{{name}} 2>/dev/null | grep -q true; then
+        docker start {{container_prefix}}{{name}}
+    fi
+    docker exec -it -w /workspace {{container_prefix}}{{name}} bash
+
+# Authenticate Claude (for subscription users)
+login name:
+    #!/usr/bin/env bash
+    set -e
+    if ! docker inspect -f '{{{{.State.Running}}}}' {{container_prefix}}{{name}} 2>/dev/null | grep -q true; then
+        docker start {{container_prefix}}{{name}}
+    fi
+    docker exec -it {{container_prefix}}{{name}} claude login
+
+# Copy files to container
+cp-to name src dest:
+    docker cp "{{src}}" {{container_prefix}}{{name}}:"{{dest}}"
+
+# Copy files from container
+cp-from name src dest:
+    docker cp {{container_prefix}}{{name}}:"{{src}}" "{{dest}}"
+
+# ─── Cleanup ─────────────────────────────────────────
+
+# Remove a container (project files persist on host)
+destroy name:
+    docker rm -f {{container_prefix}}{{name}} 2>/dev/null || true
+    @echo "✓ Container '{{name}}' removed. Project files preserved at: {{project_dir}}/{{name}}"
+
+# ─── Info ────────────────────────────────────────────
+
+# List all Claude containers with status
+list:
+    @echo "Claude Containers:"
+    @echo "─────────────────────────────────────"
+    @docker ps -a --filter "name={{container_prefix}}" --format "  {{{{.Names}}}}\t{{{{.Status}}}}" 2>/dev/null | sed "s/{{container_prefix}}//" || echo "  (none)"
+
+# Show container logs
+logs name:
+    docker logs {{container_prefix}}{{name}}
+
+# Show resource usage for running containers
+stats:
+    docker stats --no-stream --filter "name={{container_prefix}}"
+
+# ─── Colima ──────────────────────────────────────────
+
+# Start the Colima VM
+colima-start:
+    colima start --arch aarch64 --cpu 4 --memory 8 --disk 60
+
+# Stop the Colima VM
+colima-stop:
+    colima stop
+
+# Show Colima status
+colima-status:
+    colima status
