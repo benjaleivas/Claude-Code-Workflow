@@ -6,7 +6,7 @@ These transversal agents are always available via `~/.claude/agents/`. They have
 
 | Agent | Memory | Tools | Use When |
 |-------|--------|-------|----------|
-| `debugger` | user | Read, Edit, Bash, Grep, Glob | Errors, test failures, unexpected behavior |
+| `debugger` | user | Read, Write, Edit, Bash, Grep, Glob | Errors, test failures, unexpected behavior |
 | `security-reviewer` | user | Read, Grep, Glob, Bash | Auth changes, input handling, RLS, secrets |
 | `test-writer` | project | All | After implementing features, coverage gaps |
 | `supabase-specialist` | user | All + /spec | Any Supabase work (auth, DB, edge functions) |
