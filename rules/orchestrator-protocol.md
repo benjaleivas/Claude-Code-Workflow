@@ -4,6 +4,18 @@ This protocol auto-activates after any plan is approved. It sequences the existi
 
 ## The Loop
 
+### Step 0: BRANCH
+Ensure work happens on a feature branch (see `branching-strategy.md`):
+1. Check if in a worktree (`git rev-parse --git-common-dir` vs `--git-dir`) — if they differ, skip (worktrees are pre-branched)
+2. Check current branch: `git branch --show-current`
+3. If on main/master with a clean working tree:
+   - `git pull --ff-only` (if remote exists, skip if offline)
+   - `git checkout -b {type}/{description}` using the branch name from the plan
+4. If already on the correct feature branch, continue
+5. If on a wrong feature branch, warn the user before proceeding
+
+Skip this step if the task is a quick fix (no plan mode, single-file change).
+
 ### Step 1: IMPLEMENT
 Execute plan steps. Work through the blueprint systematically. If the plan has a spec section, reference it continuously during implementation.
 
@@ -35,6 +47,7 @@ Present a summary to the user:
 
 ```
 ### Execution Checklist
+- [x/~/ ] Feature branch created (or quick fix on main — justified)
 - [x/~/ ] Verification passed (command: `...`)
 - [x/~/ ] `/review` run on changes
 - [x/~/ ] `/grill` run (if 3+ files or architectural/security changes)

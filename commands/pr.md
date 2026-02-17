@@ -51,7 +51,9 @@ If the required CLI is not installed:
 
 ---
 
-If on main/master, warn and stop — don't create a PR/MR from the default branch.
+If on main/master:
+- If there are uncommitted changes: suggest creating a branch first — "You're on main. Create a feature branch with `git checkout -b feature/description` before creating a PR."
+- If all changes are already committed: warn and stop — can't create a PR from the default branch.
 
 ---
 

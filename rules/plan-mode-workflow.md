@@ -20,6 +20,7 @@ Create a detailed implementation plan including:
 - Step-by-step execution sequence
 - Verification steps for each phase
 - Rollback strategy for risky changes
+- **Branch name**: `{type}/{description}` following the branching convention (see `branching-strategy.md`)
 
 **Save to disk**: Write the plan to `{project}/.claude/plans/YYYY-MM-DD_description.md`. This makes it recoverable after compression and across sessions.
 

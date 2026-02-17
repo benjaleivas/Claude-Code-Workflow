@@ -79,6 +79,8 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 - Creating session logs and plan files
 - Scanning for secrets
 - Running `/review` on uncommitted changes
+- Creating feature branches for plan-mode work
+- Switching back to main after a PR is merged
 
 ### Consult User First
 - Deleting files or removing features
@@ -112,14 +114,23 @@ Written to project-level `{project}/.claude/MEMORY.md`. Only for corrections tha
 - Don't use `--no-verify`
 - Prefer specific `git add <files>` over `git add -A`
 
+### Branching Strategy
+- **Convention**: `feature/description`, `fix/description`, `chore/description` (lowercase kebab-case, 2-4 words)
+- **When to branch**: Always for plan-mode work. The orchestrator creates the branch automatically (Step 0).
+- **When to stay on main**: Quick fixes — single-file, under ~20 lines, no plan mode.
+- **Main is sacred**: Only merged PR code lands on main. No direct pushes for non-trivial work.
+- **One branch per task**: After a PR merges, start fresh from main.
+- See `~/.claude/rules/branching-strategy.md` for full details.
+
 ## Daily Workflow
 ```
-Write code → verify → /review → /commit
-                                    ↓
-               /grill → fix → /pr (when ready to push)
-                                    ↓
-         /techdebt → /update-tracker → /commit → close
+feature branch → write code → verify → /review → /commit
+     ↑                                               ↓
+  (auto by                    /grill → fix → /pr (push + PR)
+  orchestrator)                                       ↓
+                    /techdebt → /update-tracker → /commit → close
 ```
+Quick fixes skip branching and commit directly to main.
 
 ## Review Tool Chooser
 
@@ -144,3 +155,4 @@ These files contain detailed patterns extracted from this document. They auto-lo
 - **Session Logging** — `session-logging.md` — Compression-resistant reasoning history. Only for plan-mode tasks. Three triggers: after approval, during implementation, at session end.
 - **[LEARN] System** — `learn-system.md` — Persistent tagged corrections in project MEMORY.md.
 - **New Project Setup** — `new-project-setup.md` — Project CLAUDE.md scaffolding + plans/, session-logs/, MEMORY.md directories.
+- **Branching Strategy** — `branching-strategy.md` — Feature branch convention, orchestrator Step 0, quick fix exemption, cleanup.

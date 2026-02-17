@@ -13,5 +13,8 @@ End-of-session codebase cleanup. Find and kill duplicated and dead code.
 4. Ask before touching "refactor" items — show the proposed extraction
 5. Leave "discuss" items as-is, just report them
 6. Commit the cleanup work separately from feature commits
+7. Check for stale branches: `git branch --merged main | grep -v main`
+   - If merged branches exist, list them and offer to delete: `git branch -d <branch>`
+   - Skip if on a feature branch that hasn't been merged yet
 
 Focus on the files touched in this session first, then scan broadly if time permits.
