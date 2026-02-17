@@ -75,7 +75,7 @@ When NOT to use teams (use subagents or single session instead):
 - Sequential tasks with dependencies
 - Same-file edits (merge conflicts)
 - Simple focused tasks where only the result matters
-- Token budget is a concern (teams cost significantly more)
+- The task would take a single agent under ~15 minutes (teams add coordination overhead that only pays off for larger tasks)
 
 Patterns:
 - **Parallel review**: spawn 3 reviewers (security, performance, tests), synthesize findings
@@ -83,3 +83,9 @@ Patterns:
 - **Cross-layer feature**: frontend teammate, backend teammate, test teammate — each owns their files
 - **Delegate mode**: press Shift+Tab so the lead only coordinates, never implements
 - **Plan approval**: require teammates to plan before implementing for risky tasks
+
+## Agent Failure Handling
+
+**Stall detection**: If an agent has not made verification progress after 3 consecutive edit-verify cycles, pause and report to the user with findings so far. Do not continue iterating without user input.
+
+**Turn-limit exhaustion**: When an agent exhausts its maxTurns, it must end with a structured summary: root cause hypothesis (if any), evidence gathered, files investigated, and what remains unexplored. This returns to the main session for user decision.
