@@ -1,4 +1,4 @@
-# Claude-Code-Workflow
+# Claude Code workflow
 
 A structured workflow system for [Claude Code](https://code.claude.com/docs) that adds planning, code review, git enforcement, and persistent learning on top of the base tool. Everything lives in `~/.claude/` and loads automatically across all your projects.
 
