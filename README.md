@@ -206,12 +206,12 @@ Sources that informed the design of this workflow system:
 | Source | Author | What It Informed |
 |--------|--------|-----------------|
 | [Claude Code Documentation](https://code.claude.com/docs) | Anthropic | Hooks API, agent YAML format, settings.json schema, slash commands, MCP integration |
-| [Boris Cherny's Claude Code Setup](https://x.com/bcherny/status/2007179832300581177) | Boris Cherny | PostToolUse formatting hook, `/permissions` pattern, verify-app subagent, plan-first workflow, shared CLAUDE.md as compounding knowledge |
-| [Claude Code Changes How I Work](https://causalinf.substack.com/p/claude-code-changes-how-i-work-part) | Scott Cunningham | Devil's advocate agent pattern for combating LLM overconfidence |
-| [claude-container](https://github.com/paulgp/claude-container) | Paul Goldsmith-Pinkham | Docker isolation with Colima + Justfile for safe YOLO mode |
-| [Claude Code: My Workflow](https://psantanna.com/claude-code-my-workflow/) | Pedro Sant'Anna | Multi-agent verification, critic-fixer loops, quality gates, persistent learning via MEMORY.md |
+| [Boris Cherny's Claude Code Setup](https://x.com/bcherny/status/2007179832300581177) | Boris Cherny (Claude Code creator) | PostToolUse formatting hook, `/permissions` pattern, verify-app subagent, plan-first workflow, shared CLAUDE.md as compounding knowledge |
+| [Claude Code Changes How I Work](https://causalinf.substack.com/p/claude-code-changes-how-i-work-part) | Scott Cunningham (Researcher) | Devil's advocate agent pattern for combating LLM overconfidence |
+| [claude-container](https://github.com/paulgp/claude-container) | Paul Goldsmith-Pinkham (Researcher) | Docker isolation with Colima + Justfile for safe YOLO mode |
+| [Claude Code: My Workflow](https://psantanna.com/claude-code-my-workflow/) | Pedro Sant'Anna (Researcher) | Multi-agent verification, critic-fixer loops, quality gates, persistent learning via MEMORY.md |
 | [Intelligent AI Delegation](https://arxiv.org/abs/2602.11865) | Academic paper | Agent failure handling, stall detection, team cost heuristics |
-| [Intro to Multiagent Systems](https://www.linkedin.com/feed/update/urn:li:activity:7328490306763481088/) | Celeste Bean | Multiagent design patterns, agent-friendly task classification |
+| [Intro to Multiagent Systems](https://www.linkedin.com/feed/update/urn:li:activity:7328490306763481088/) | Celeste Bean (Stanford GSB) | Multiagent design patterns, agent-friendly task classification |
 | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | OWASP Foundation | Security reviewer agent's vulnerability checklist |
 
 ## License
