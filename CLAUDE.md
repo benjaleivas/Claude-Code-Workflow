@@ -2,19 +2,18 @@
 
 ## Session Start
 
-When a new session begins and the user sends their first message, start your response with a brief workflow orientation:
+On the **first message** of every new session, follow the **Session Lifecycle** (see `~/.claude/rules/session-lifecycle.md`):
 
-1. A one-liner acknowledging the workflow is active (agents, commands, hooks loaded)
-2. Classify their request and propose the matching workflow path:
-   - **Feature / non-trivial task** → "I'll enter plan mode. Expect: spec → devil's advocate → blueprint → implement → verify → /review."
-   - **Bug / error / failing tests** → "I'll use the debugger pattern: capture → hypothesize → isolate → root cause → fix. No planning overhead."
-   - **Quick fix / small change** → "Straightforward — I'll make the change, verify, and suggest /review."
-   - **Exploration / prototype** → "I'll suggest /explore to keep this in a sandbox with relaxed gates."
-   - **Risky / data-heavy work** → "Consider /container for an isolated environment."
-   - **Workflow meta-task** → "Working on the workflow itself — I'll modify ~/.claude/ config."
-3. If the project has `.claude/MEMORY.md`, mention relevant [LEARN] entries for the domain.
+1. One-liner acknowledging the workflow is active.
+2. Classify the task and present the interactive setup checklist:
+   - **Non-trivial** (feature, bug, multi-file): project check → MEMORY.md → worktree → plan mode. Guide interactively with AskUserQuestion.
+   - **Quick fix** (single-file, <20 lines): show abbreviated 3-step checklist (fix → verify → /commit).
+   - **Exploration / prototype** → suggest `/explore`.
+   - **Risky / data-heavy** → suggest `/container`.
+   - **Workflow meta-task** → modify `~/.claude/` config directly.
+3. Check `.claude/MEMORY.md` for relevant [LEARN] entries.
 
-Keep it to 3-5 lines total. Don't list all available commands — just the ones relevant to THIS task. Then proceed immediately with the work.
+The full lifecycle (setup → planning → execution → satisfaction check → ship → cleanup) is governed by `session-lifecycle.md`. After execution, the **satisfaction check** replaces the old report step — ask if satisfied, offer an action menu, then proceed to ship or iterate.
 
 Skip this orientation for:
 - Follow-up messages in an ongoing session (only fires on the first message)
@@ -149,6 +148,7 @@ Quick fixes skip branching and commit directly to main.
 
 These files contain detailed patterns extracted from this document. They auto-load every session. If a rule doesn't load, read the file manually.
 
+- **Session Lifecycle** — `session-lifecycle.md` — Full session lifecycle: setup checklist → planning → execution → satisfaction check → ship → cleanup. Governs every session across all projects.
 - **Structured Thinking** — `structured-thinking.md` — XML tags (`<brainstorm>`, `<analysis>`, `<decision>`) and anti-hallucination verification. MANDATORY for plan mode.
 - **Plan Mode Workflow** — `plan-mode-workflow.md` — 5-phase workflow (Thinking → Questions → Blueprint with specs → Devil's Advocate → Propose). Plans saved to disk. Orchestrator activates after approval.
 - **Orchestrator Protocol** — `orchestrator-protocol.md` — Post-plan execution loop: implement → verify → /review → fix → re-verify → /commit. Uses existing slash commands.

@@ -40,22 +40,28 @@ Address issues found in review. Prioritize: critical > major > minor. Don't fix 
 ### Step 5: RE-VERIFY
 Run verification again after fixes. If it fails, loop back to Step 4.
 
-### Step 6: REPORT
-Present a summary to the user:
-- What was implemented
-- Verification results
-- Review findings and how they were addressed
+### Step 6: SATISFACTION CHECK & NEXT ACTIONS
+Handled by `session-lifecycle.md` Phase 3. In summary:
 
-**MANDATORY**: End every report with the **Execution Checklist**:
+1. Present what was implemented + verification results.
+2. Present the **Execution Checklist** (below).
+3. Ask: **"Are you satisfied with the changes?"**
+4. Offer an action menu via AskUserQuestion (multiSelect: true) with relevant options:
+   `/review`, `/grill`, `/qa`, `/techdebt`, `/simplify`, Preview, `/test-and-fix`, `/commit`, `/pr`, or "More changes needed".
+5. Execute chosen actions. If both `/commit` and `/pr` are selected, run sequentially.
+
+See `session-lifecycle.md` Phase 3 for the full action menu table and decision logic.
+
+**MANDATORY**: The **Execution Checklist** must be shown before asking for satisfaction:
 
 ```
 ### Execution Checklist
-- [x/~/ ] Feature branch created (or quick fix on main — justified)
+- [x/~/ ] Feature branch or worktree created (or quick fix on main — justified)
 - [x/~/ ] Verification passed (command: `...`)
 - [x/~/ ] `/review` run on changes
 - [x/~/ ] `/grill` run (if 3+ files or architectural/security changes)
 - [x/~/ ] All review findings addressed
-- [x/~/ ] `/verify-ui` run (if frontend/UI changes and Chrome available)
+- [x/~/ ] `/verify-ui` or Preview run (if frontend/UI changes)
 - [x/~/ ] `/commit` suggested or completed
 - [x/~/ ] `/techdebt` suggested (if multi-file plan)
 - [x/~/ ] `/update-tracker` suggested (if 3+ files or 50+ lines)
@@ -64,7 +70,7 @@ Present a summary to the user:
 
 Legend: `[x]` = done, `[~]` = not applicable / skipped with justification, `[ ]` = not done.
 
-If any box is `[ ]` without justification, go back and complete it before closing.
+If any box is `[ ]` without justification, go back and complete it before asking for satisfaction.
 
 ## Important Notes
 - This protocol uses your existing slash commands — it doesn't replace them
