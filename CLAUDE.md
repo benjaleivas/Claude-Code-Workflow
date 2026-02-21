@@ -30,6 +30,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 
 ### When Planning (plan mode)
 - Reference `/verify-app` (or project equivalent) as the verification step in every plan
+- If the plan involves UI changes and the project has `.claude/launch.json`: note that Desktop preview will auto-verify continuously during implementation
 - Reference `/grill` as the pre-push quality gate
 - Reference `/devils-advocate` for any section of the plan that involves complex logic, concurrency, security, or data integrity
 - Include `/techdebt` as a final cleanup step in multi-file plans
@@ -38,6 +39,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 
 ### When Implementing
 - After finishing a unit of work: suggest running `/review` before committing
+- In Desktop: prefer the built-in diff view + **Review code** button for pre-commit reviews (inline comments, file-by-file). In CLI: use `/review`.
 - After committing: if the work is ready to push, suggest `/grill` before `/pr`
 - After writing complex code: suggest `/simplify` to reduce unnecessary complexity
 - If tests exist: suggest `/test-and-fix` after changes that could break things
@@ -66,7 +68,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 3. **Use subagents to keep context clean.** Offload research, verification, and review to subagents. Don't pollute the main context with exploration output.
 4. **If you do something more than once, it should be a command.** If I ask for the same thing twice in a session, suggest creating a slash command for it.
 5. **Self-improvement.** After every mistake or correction, write a `[LEARN:tag]` entry to the project's MEMORY.md. See `~/.claude/rules/learn-system.md`.
-6. **Work in parallel.** Git worktrees for independent tasks. Agent teams when teammates need to communicate.
+6. **Work in parallel.** Git worktrees for independent tasks (`--worktree` flag in CLI, automatic in Desktop). Agent teams when teammates need to communicate.
 7. **Spec before code.** For tasks involving external services, data processing, or complex state: outline expected shapes, contracts, and edge cases BEFORE writing code. Specs go in the plan (Phase 3) or via `/spec`.
 8. **Persist everything that matters.** Plans, corrections ([LEARN] tags), and session reasoning go to disk. Conversation context is ephemeral — auto-compression will discard it. Anything worth keeping gets written to a file before it can be lost.
 
@@ -137,6 +139,7 @@ Quick fixes skip branching and commit directly to main.
 | Situation | Tool | Time |
 |-----------|------|------|
 | Quick check before commit | `/review` | 30s |
+| Inline diff review (Desktop) | Diff view + **Review code** button | 1-2 min |
 | Thorough review with memory | `code-reviewer` agent | 5 min |
 | Automated critic-fixer loop | `/qa` | 5-15 min |
 | Adversarial pre-push gate | `/grill` | 5 min |

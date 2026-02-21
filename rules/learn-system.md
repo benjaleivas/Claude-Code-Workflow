@@ -28,6 +28,9 @@ Examples:
 - Before implementing in a domain, check MEMORY.md for relevant [LEARN] entries
 - At session start for multi-session projects
 
+## Relationship to Auto Memory
+Claude Code also maintains automatic notes at `~/.claude/projects/<project>/memory/MEMORY.md`. Auto memory captures patterns Claude notices on its own. [LEARN] tags capture explicit corrections from the user. Both coexist — auto memory is passive observation, [LEARN] tags are active corrections.
+
 ## Maintenance
 - Periodic cleanup via `/revise-claude-md`
 - Remove entries that are no longer relevant (e.g., after a library upgrade)
