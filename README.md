@@ -16,6 +16,8 @@ Claude Code is powerful out of the box, but it doesn't impose structure. It won'
 - **Docker isolation** for running Claude with full permissions in a sandboxed container
 - **Persistent learning** via `[LEARN]` tags that accumulate corrections across sessions
 
+Works in both CLI and Desktop. Desktop users get additional integration: preview auto-verification via `.claude/launch.json`, inline diff review, and PR monitoring with auto-fix/auto-merge.
+
 Built for solo developers and small teams. Works with any tech stack, though it includes specialized agents for React Native/Expo and Supabase/Deno.
 
 ## Quick Start

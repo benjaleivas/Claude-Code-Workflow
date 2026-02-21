@@ -1,15 +1,24 @@
-Visually verify UI changes in the browser using Chrome integration.
+Visually verify UI changes in the browser.
 
-**Requires**: Chrome integration active. If not connected, suggest `claude --chrome` or `/chrome` and stop.
+**Preferred**: If `.claude/launch.json` exists and `preview_*` tools are available, use the preview server (no Chrome needed). Otherwise, fall back to Chrome integration.
 
 ---
 
 ## Instructions
 
-### Step 1: Check Chrome Connection
-Verify Chrome integration is available. If not:
-- Tell the user: "Chrome integration is not connected. Run `/chrome` or restart with `claude --chrome` to enable browser verification."
-- Stop here — do not proceed without Chrome.
+### Step 0: Check for Preview Server
+If `.claude/launch.json` exists and `preview_*` MCP tools are available:
+1. Start the preview server with `preview_start` (if not already running)
+2. Use `preview_screenshot` for visual check
+3. Use `preview_snapshot` for content/structure verification
+4. Use `preview_console_logs` for error checking
+5. Use `preview_network` with `filter: "failed"` for network failures
+6. Skip to Step 5 (Report) — Chrome is not needed
+
+### Step 1: Check Chrome Connection (fallback)
+If no preview server is available, verify Chrome integration. If not connected:
+- Tell the user: "No preview server configured and Chrome is not connected. Either add `.claude/launch.json` or run `claude --chrome` to enable browser verification."
+- Stop here.
 
 ### Step 2: Determine URL
 If `$ARGUMENTS` contains a URL or path, use it. Otherwise:

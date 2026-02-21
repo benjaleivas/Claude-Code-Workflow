@@ -23,13 +23,16 @@ Execute plan steps. Work through the blueprint systematically. If the plan has a
 Run the project's verification command (defined in project CLAUDE.md). If none exists, run the type checker or test suite at minimum. If verification fails, fix and re-verify before proceeding.
 
 ### Step 2b: VISUAL VERIFY (frontend/UI changes only)
-If the plan involved UI changes and Chrome is available (`/chrome` connected):
-- Suggest `/verify-ui` to visually check the changes in a browser
-- Check for console errors, visual regressions, broken layouts
-- Skip if: backend-only changes, no web target, Chrome not connected
+If the plan involved UI changes:
+1. **Desktop with preview**: If `.claude/launch.json` exists and preview tools are available, use `preview_*` tools (screenshot, snapshot, inspect, console_logs). Desktop auto-verifies after each edit, so confirm results here.
+2. **CLI with Chrome**: If Chrome is connected (`/chrome`), suggest `/verify-ui` to visually check changes in a browser.
+3. **Neither available**: Skip visual verification, note in the execution checklist.
+
+Check for console errors, visual regressions, broken layouts.
+Skip if: backend-only changes, no web target.
 
 ### Step 3: REVIEW
-Suggest `/review` for uncommitted changes. For complex work (3+ files, architectural changes, security-sensitive code), suggest `/grill` instead. For automated fix iteration (critic finds issues, you fix, critic re-audits), suggest `/qa`.
+In Desktop: suggest the built-in diff view + **Review code** button for inline feedback. In CLI: suggest `/review` for uncommitted changes. For complex work (3+ files, architectural changes, security-sensitive code), suggest `/grill` instead. For automated fix iteration (critic finds issues, you fix, critic re-audits), suggest `/qa`.
 
 ### Step 4: FIX
 Address issues found in review. Prioritize: critical > major > minor. Don't fix style nits during this step — those go to `/techdebt`.
@@ -68,3 +71,4 @@ If any box is `[ ]` without justification, go back and complete it before closin
 - Verification pass/fail is the quality gate (no numeric scoring)
 - If stuck at any step, surface the blocker to the user instead of spinning
 - For multi-session work, update the session log at each step transition
+- After `/pr`: In Desktop, suggest enabling **auto-fix** (Claude fixes failing CI checks) and **auto-merge** (squash merge when checks pass) from the CI status bar. In CLI, suggest monitoring CI manually or using `/fix-ci` if checks fail.

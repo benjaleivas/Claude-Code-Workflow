@@ -24,6 +24,49 @@ If the project uses CI/CD, include a brief section:
 - Git preferences (already in transversal)
 - Subagent patterns (already in transversal)
 
+## Preview Server Configuration (web projects)
+For projects with a dev server, create `.claude/launch.json` so Desktop preview and `preview_*` tools can auto-verify UI changes:
+
+```json
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    }
+  ]
+}
+```
+
+Adjust `runtimeExecutable`, `runtimeArgs`, and `port` to match the project. For monorepos with multiple servers, add multiple configurations. Set `"autoVerify": false` at the top level to disable auto-verification after every edit.
+
+## Path-Specific Rules
+Project-level rules in `.claude/rules/` can use YAML frontmatter with a `paths` field to load conditionally:
+
+```markdown
+---
+paths:
+  - "src/api/**/*.ts"
+---
+# API Conventions
+These rules only load when working on API files.
+```
+
+Use this for directory-scoped conventions (e.g., API rules, component rules, test rules).
+
+## CLAUDE.md Imports
+Project CLAUDE.md files can import content from other files using `@path` syntax:
+
+```markdown
+@docs/api-conventions.md
+@docs/database-patterns.md
+```
+
+This keeps CLAUDE.md lean while referencing detailed docs. Imports are recursive (max depth 5) and paths resolve relative to the containing file.
+
 ## Also Scaffold These Directories
 When setting up a new project, create:
 - `{project}/.claude/plans/` — for versioned plan artifacts

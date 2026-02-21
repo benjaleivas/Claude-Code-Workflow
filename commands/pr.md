@@ -57,6 +57,15 @@ If on main/master:
 
 ---
 
+## Desktop: Auto-fix & Auto-merge
+
+After creating the PR, if running in Desktop:
+- Suggest enabling **Auto-fix** in the CI status bar — Claude automatically reads failure output and iterates on fixes
+- Suggest enabling **Auto-merge** — the PR squash-merges once all checks pass (requires auto-merge enabled in GitHub repo settings)
+- The user can then work on other tasks while CI runs in the background
+
+In CLI: suggest monitoring CI manually, or using `/fix-ci` if checks fail.
+
 ## Post-PR Follow-up
 
 After creating the PR/MR and printing the URL, remember to check on it later in this session.

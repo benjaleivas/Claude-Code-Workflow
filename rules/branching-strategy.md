@@ -82,6 +82,10 @@ If a session starts on main but should be on a feature branch:
 - If a relevant branch exists, switch to it
 - If not, follow the normal branching flow
 
+For parallel work on independent tasks:
+- **CLI**: Use `claude --worktree` to start a session with automatic worktree isolation
+- **Desktop**: Each new session (+ New session) auto-creates an isolated worktree
+
 ## Worktree Awareness
 
 Git worktrees are pre-branched — each worktree has its own branch by design. When inside a worktree:
