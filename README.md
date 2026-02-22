@@ -1,6 +1,6 @@
-# Claude Code workflow
+# Claude Code Workflow
 
-A structured workflow system for [Claude Code](https://code.claude.com/docs) that adds planning, code review, git enforcement, and persistent learning on top of the base tool. Everything lives in `~/.claude/` and loads automatically across all your projects.
+A structured workflow system for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that adds planning, code review, git enforcement, and persistent learning on top of the base tool. Everything lives in `~/.claude/` and loads automatically across all your projects.
 
 ## What Is This?
 
@@ -36,106 +36,193 @@ To undo: `./uninstall.sh` replaces symlinks with file copies, making `~/.claude/
 
 ## How It Works
 
-Every non-trivial task follows this lifecycle:
+Every session starts by classifying the task. The classification determines how much structure you need:
 
 ```
-feature branch → plan → implement → verify → /review → /commit
-     |                                                      |
-  (auto by                         /grill → fix → /pr (push + PR)
-  orchestrator)                                             |
-                     /techdebt → /update-tracker → /commit → close
+New session
+│
+├─ Quick fix (single file, <20 lines)
+│  └─ fix → verify → /commit → done
+│
+├─ Non-trivial (feature, bug, multi-file)
+│  └─ full lifecycle (see below)
+│
+├─ Exploration / prototype
+│  └─ /explore mode (relaxed quality gates)
+│
+└─ Risky / data-heavy
+   └─ /container (Docker isolation)
 ```
 
-1. **Plan mode** (Shift+Tab twice) explores the problem, asks clarifying questions, writes a spec, runs devil's advocate, then proposes a blueprint
-2. **Orchestrator** auto-activates after plan approval: creates a feature branch, implements the plan, runs verification, triggers review
-3. **Review pipeline** catches issues at multiple levels (quick `/review`, thorough `/grill`, automated `/qa` loops)
-4. **Post-PR tracking** reminds you to merge and clean up the branch
+Quick fixes skip all ceremony — just edit, verify, and commit directly to main.
 
-For quick fixes (single file, under ~20 lines), the planning overhead is skipped — just edit, verify, and commit directly to main.
+### Full Lifecycle
 
-## Components
+For non-trivial work, the system follows five phases. The orchestrator auto-activates after you approve a plan and drives phases 2–4:
 
-### Agents
+```
+┌─────────────────────────────────────────────────────────────┐
+│  SETUP                                                      │
+│  Create worktree → feature branch → load MEMORY.md          │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────┐
+│  PLAN                                                       │
+│  Structured thinking → clarifying questions →               │
+│  blueprint + spec → devil's advocate → propose              │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────┐
+│  EXECUTE  (orchestrator auto-activates)                     │
+│  Implement → verify → /review → fix → re-verify            │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────┐
+│  REVIEW & SHIP                                              │
+│  Satisfaction check → /grill → /commit → /pr → CI          │
+└──────────────────────────┬──────────────────────────────────┘
+                           │
+┌──────────────────────────▼──────────────────────────────────┐
+│  CLEANUP                                                    │
+│  Merge PR → delete branch → delete worktree → /techdebt    │
+└─────────────────────────────────────────────────────────────┘
+```
 
-Custom agents with persistent memory and specialized tool access. These are spawned as subagents to handle focused tasks without polluting the main conversation context.
+**Setup** isolates the work in a git worktree with its own feature branch, then loads any relevant [LEARN] corrections from previous sessions.
+
+**Plan** uses structured thinking tags (`<brainstorm>`, `<analysis>`, `<decision>`) to explore the problem, asks clarifying questions, writes a spec with data shapes and edge cases, then runs a devil's advocate review to challenge the approach before committing to it.
+
+**Execute** implements the plan step-by-step, running the project's verification command after each change and triggering a code review before moving on.
+
+**Review & Ship** asks if you're satisfied, offers relevant next actions (review, testing, commit, PR), and pushes to CI.
+
+**Cleanup** merges the PR, deletes the branch and worktree, and runs a tech debt sweep.
+
+## Agents
+
+Agents are specialized subprocesses with their own context window, persistent memory, and tool access. They handle focused tasks without polluting the main conversation.
+
+#### Core
 
 | Agent | Memory | Tools | Use When |
 |-------|--------|-------|----------|
-| `code-reviewer` | user | Read, Grep, Glob, Bash | Pre-commit reviews, PR reviews, /qa critic |
+| `code-reviewer` | user | Read, Grep, Glob, Bash | Pre-commit reviews, PR reviews, `/qa` critic |
 | `debugger` | user | Read, Write, Edit, Bash, Grep, Glob | Errors, test failures, unexpected behavior |
 | `security-reviewer` | user | Read, Grep, Glob, Bash | Auth changes, input handling, RLS, secrets |
 | `test-writer` | project | All | After implementing features, coverage gaps |
+
+#### Specialist
+
+| Agent | Memory | Tools | Use When |
+|-------|--------|-------|----------|
 | `supabase-specialist` | user | All + /spec | Any Supabase work (auth, DB, edge functions) |
 | `expo-specialist` | user | All | React Native/Expo mobile development |
 
-### Commands
+## Commands
 
-Slash commands available via `/command-name`. These automate repetitive workflows so you don't have to re-prompt the same instructions every session.
+Slash commands available via `/command-name`. Grouped by when you'd use them in the workflow.
+
+### Planning
 
 | Command | Description |
 |---------|-------------|
-| `/review` | Quick review of uncommitted changes. Returns SHIP/ALMOST/REWORK verdict |
-| `/grill` | Adversarial code review. Skeptical staff engineer perspective |
-| `/qa` | Automated critic-fixer loop. Max 3 rounds. Use `/qa security` for security focus |
-| `/commit` | Commit current changes with a clear message |
-| `/pr` | Push branch and create a pull request |
-| `/explore` | Enter exploration mode with relaxed quality gates |
-| `/container` | Manage isolated Docker containers for YOLO mode |
-| `/devils-advocate` | Challenge the current approach with systematic skepticism |
-| `/spec` | Generate an upfront specification before coding |
-| `/simplify` | Simplify code that was just written |
-| `/techdebt` | End-of-session codebase cleanup |
-| `/test-and-fix` | Run tests and fix any failures |
-| `/ralph-loop` | Autonomous test iteration loop (runs tests, fixes, repeats) |
+| `/spec` | Generate an upfront specification — data shapes, contracts, edge cases, success criteria |
+| `/devils-advocate` | Challenge the current approach with systematic, good-faith skepticism |
+| `/explore` | Enter exploration mode with relaxed quality gates for prototyping |
+
+### Implementing
+
+| Command | Description |
+|---------|-------------|
+| `/test-and-fix` | Run the test suite and fix any failures one at a time |
+| `/ralph-loop` | Autonomous test iteration loop — runs tests, analyzes failures, fixes, repeats (max 10 iterations) |
 | `/cancel-ralph` | Cancel an active Ralph loop |
-| `/fix-ci` | Diagnose and fix failing CI |
-| `/update-tracker` | Update the work tracker with session progress |
-| `/verify-ui` | Visually verify UI changes in Chrome |
+| `/verify-ui` | Visually verify UI changes in the browser |
+| `/simplify` | Reduce unnecessary complexity from recently written code |
 
-#### Review Tool Chooser
+### Reviewing
 
-Multiple review tools exist for different situations:
+| Command | Description |
+|---------|-------------|
+| `/review` | Quick review of uncommitted changes. Returns SHIP / ALMOST / REWORK verdict |
+| `/grill` | Adversarial code review from a skeptical staff engineer perspective |
+| `/qa` | Automated critic-fixer loop (max 3 rounds). Use `/qa security` for security focus |
+
+Multiple review tools exist because different situations need different levels of scrutiny:
 
 | Situation | Tool | Time |
 |-----------|------|------|
-| Quick check before commit | `/review` | 30s |
-| Thorough review with memory | `code-reviewer` agent | 5 min |
-| Automated critic-fixer loop | `/qa` | 5-15 min |
-| Adversarial pre-push gate | `/grill` | 5 min |
-| Security-specific audit | `security-reviewer` agent | 5 min |
+| Quick check before commit | `/review` | ~30s |
+| Thorough review with memory | `code-reviewer` agent | ~5 min |
+| Automated critic-fixer loop | `/qa` | 5–15 min |
+| Adversarial pre-push gate | `/grill` | ~5 min |
+| Security-specific audit | `security-reviewer` agent | ~5 min |
 
-### Hooks
+### Shipping
 
-Event-driven shell scripts that run automatically in response to Claude Code lifecycle events. Configured in `settings.json`.
+| Command | Description |
+|---------|-------------|
+| `/commit` | Stage and commit with a WHY-focused message. Warns on non-trivial changes to main |
+| `/pr` | Push branch and create a pull request (GitHub) or merge request (GitLab) |
+| `/fix-ci` | Diagnose and fix failing CI checks |
 
-| Hook | Event | Purpose |
-|------|-------|---------|
-| `session-init.sh` | SessionStart | Load environment, check prerequisites |
-| `prompt-validator.sh` | UserPromptSubmit | Validate prompts before processing |
-| `protect-files.sh` | PreToolUse (Edit/Write) | Prevent modifications to protected files |
-| `auto-format.sh` | PostToolUse (Edit/Write) | Auto-format after file changes |
-| `scan-secrets.sh` | PostToolUse (Edit/Write) | Scan for accidentally committed secrets |
-| `suggest-verify.sh` | PostToolUse (Edit/Write) | Remind to run verification after changes |
-| `pre-compact.sh` | PreCompact | Save context before auto-compression |
-| `session-cleanup.sh` | SessionEnd | Clean up temporary resources |
-| `check-open-pr.sh` | Stop | Remind about open PRs before session ends |
-| `notify.sh` | Notification | System notifications for permission/idle prompts |
+### Maintenance
 
-### Rules
+| Command | Description |
+|---------|-------------|
+| `/techdebt` | End-of-session cleanup — dead code, unused imports, stale branches |
+| `/update-tracker` | Log session work to the project tracker |
+| `/container` | Manage isolated Docker containers for YOLO mode |
 
-Markdown files that auto-load every session and guide Claude's behavior. These define the planning workflow, execution protocol, and quality standards.
+## Hooks
+
+Event-driven shell scripts that run automatically during Claude Code lifecycle events. Configured in `settings.json`.
+
+### Code Quality
+
+These fire on every file edit to maintain standards automatically:
+
+| Hook | Event | What It Does |
+|------|-------|--------------|
+| `protect-files.sh` | PreToolUse (Edit/Write) | Blocks edits to `.env`, credentials, lock files |
+| `auto-format.sh` | PostToolUse (Edit/Write) | Runs Prettier, Black, or SwiftFormat based on file type |
+| `scan-secrets.sh` | PostToolUse (Edit/Write) | Async scan for accidentally introduced API keys and tokens |
+| `suggest-verify.sh` | PostToolUse (Edit/Write) | Reminds to run the verification command after changes |
+
+### Session Lifecycle
+
+These manage the session from start to finish:
+
+| Hook | Event | What It Does |
+|------|-------|--------------|
+| `session-init.sh` | SessionStart | Detects project type, announces MEMORY.md and available agents |
+| `pre-compact.sh` | PreCompact | Saves context snapshot to session log before auto-compression |
+| `session-cleanup.sh` | SessionEnd | Cleans up temporary resources |
+| `check-open-pr.sh` | Stop | Reminds about open PRs on the current branch before exit |
+| `notify.sh` | Notification | System notifications for permission and idle prompts |
+
+### Input Processing
+
+| Hook | Event | What It Does |
+|------|-------|--------------|
+| `prompt-validator.sh` | UserPromptSubmit | Validates prompts before processing |
+
+## Rules
+
+Rules are markdown files that auto-load every session and define how Claude plans, executes, and maintains quality. They're the behavioral backbone of the workflow.
 
 | Rule | Purpose |
 |------|---------|
-| `structured-thinking.md` | XML thinking tags (`<brainstorm>`, `<analysis>`, `<decision>`) for plan mode |
-| `plan-mode-workflow.md` | 5-phase planning: thinking, questions, blueprint with specs, devil's advocate, propose |
-| `orchestrator-protocol.md` | Post-plan execution loop: branch, implement, verify, review, fix, report |
-| `spec-before-code.md` | Data shapes, API contracts, edge cases, and success criteria before implementation |
-| `subagent-patterns.md` | Agent spawning patterns, team coordination, and failure handling |
-| `session-logging.md` | Compression-resistant reasoning history written to disk |
-| `learn-system.md` | Persistent `[LEARN:tag]` corrections that compound across sessions |
-| `branching-strategy.md` | Feature branch conventions, orchestrator integration, cleanup |
-| `new-project-setup.md` | Project CLAUDE.md scaffolding for new codebases |
+| `structured-thinking` | XML thinking tags for mandatory plan-mode reasoning |
+| `plan-mode-workflow` | 5-phase planning: thinking → questions → blueprint → devil's advocate → propose |
+| `orchestrator-protocol` | Post-plan execution loop: branch → implement → verify → review → fix |
+| `spec-before-code` | Data shapes, API contracts, edge cases before implementation |
+| `session-lifecycle` | Full session lifecycle from setup checklist to cleanup |
+| `subagent-patterns` | Agent spawning patterns, team coordination, failure handling |
+| `session-logging` | Compression-resistant reasoning history written to disk |
+| `learn-system` | Persistent `[LEARN:tag]` corrections that compound across sessions |
+| `branching-strategy` | Feature branch conventions, orchestrator integration, cleanup |
+| `new-project-setup` | Project CLAUDE.md scaffolding for new codebases |
 
 ## Container (Docker Isolation)
 
@@ -207,7 +294,7 @@ Sources that informed the design of this workflow system:
 
 | Source | Author | What It Informed |
 |--------|--------|-----------------|
-| [Claude Code Documentation](https://code.claude.com/docs) | Anthropic | Hooks API, agent YAML format, settings.json schema, slash commands, MCP integration |
+| [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code) | Anthropic | Hooks API, agent YAML format, settings.json schema, slash commands, MCP integration |
 | [Boris Cherny's Claude Code Setup](https://x.com/bcherny/status/2007179832300581177) | Boris Cherny (Claude Code creator) | PostToolUse formatting hook, `/permissions` pattern, verify-app subagent, plan-first workflow, shared CLAUDE.md as compounding knowledge |
 | [Claude Code Changes How I Work](https://causalinf.substack.com/p/claude-code-changes-how-i-work-part) | Scott Cunningham (Researcher) | Devil's advocate agent pattern for combating LLM overconfidence |
 | [claude-container](https://github.com/paulgp/claude-container) | Paul Goldsmith-Pinkham (Researcher) | Docker isolation with Colima + Justfile for safe YOLO mode |
