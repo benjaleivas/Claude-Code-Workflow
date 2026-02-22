@@ -21,6 +21,7 @@ Create a detailed implementation plan including:
 - Verification steps for each phase
 - Rollback strategy for risky changes
 - **Branch name**: `{type}/{description}` following the branching convention (see `branching-strategy.md`)
+- **Simplify scope note** (optional): if the plan intentionally uses verbose patterns for documented reasons (e.g., readability, explicit error handling), note it here so Step 2c (`/simplify`) does not undo deliberate choices
 
 **Save to disk**: Write the plan to `{project}/.claude/plans/YYYY-MM-DD_description.md`. This makes it recoverable after compression and across sessions.
 

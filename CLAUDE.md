@@ -40,7 +40,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 - After finishing a unit of work: suggest running `/review` before committing
 - In Desktop: prefer the built-in diff view + **Review code** button for pre-commit reviews (inline comments, file-by-file). In CLI: use `/review`.
 - After committing: if the work is ready to push, suggest `/grill` before `/pr`
-- After writing complex code: suggest `/simplify` to reduce unnecessary complexity
+- After writing ANY code: `/simplify` runs automatically (part of the orchestrator loop and quick fix workflow)
 - If tests exist: suggest `/test-and-fix` after changes that could break things
 - If tests are failing in a loop and manual iteration is tedious: suggest `/ralph-loop`
 - For thorough automated review with fix loop: suggest `/qa` (or `/qa security` for security focus)
@@ -79,6 +79,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 - Fixing lint/type errors that are clearly wrong
 - Creating session logs and plan files
 - Scanning for secrets
+- Running `/simplify` on changed code (auto-fix mode)
 - Running `/review` on uncommitted changes
 - Creating feature branches for plan-mode work
 - Switching back to main after a PR is merged
@@ -125,11 +126,11 @@ Written to project-level `{project}/.claude/MEMORY.md`. Only for corrections tha
 
 ## Daily Workflow
 ```
-feature branch → write code → verify → /review → /commit
-     ↑                                               ↓
-  (auto by                    /grill → fix → /pr (push + PR)
-  orchestrator)                                       ↓
-                    /techdebt → /update-tracker → /commit → close
+feature branch → write code → verify → /simplify → /review → /commit
+     ↑                                                          ↓
+  (auto by                         /grill → fix → /pr (push + PR)
+  orchestrator)                                                  ↓
+                         /techdebt → /update-tracker → /commit → close
 ```
 Quick fixes skip branching and commit directly to main.
 
@@ -137,6 +138,7 @@ Quick fixes skip branching and commit directly to main.
 
 | Situation | Tool | Time |
 |-----------|------|------|
+| Code cleanup after writing | `/simplify` | 10-30s |
 | Quick check before commit | `/review` | 30s |
 | Inline diff review (Desktop) | Diff view + **Review code** button | 1-2 min |
 | Thorough review with memory | `code-reviewer` agent | 5 min |

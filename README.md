@@ -138,7 +138,7 @@ Slash commands available via `/command-name`. Grouped by when you'd use them in 
 | `/ralph-loop` | Autonomous test iteration loop — runs tests, analyzes failures, fixes, repeats (max 10 iterations) |
 | `/cancel-ralph` | Cancel an active Ralph loop |
 | `/verify-ui` | Visually verify UI changes in the browser |
-| `/simplify` | Reduce unnecessary complexity from recently written code |
+| `/simplify` | Clean and simplify code (runs automatically after every implementation) |
 
 ### Reviewing
 

@@ -31,6 +31,17 @@ If the plan involved UI changes:
 Check for console errors, visual regressions, broken layouts.
 Skip if: backend-only changes, no web target.
 
+### Step 2c: SIMPLIFY
+Run `/simplify` on all changed files. This step is **MANDATORY** for every implementation — it runs autonomously as part of the loop, not as a user-chosen action.
+
+1. `/simplify` detects mode automatically (lightweight for small changes, full for larger ones)
+2. Auto-fix changes are applied directly (structural simplifications, idiomatic patterns)
+3. Suggestions that alter public API shape are shown to the user for quick approval
+4. If changes were made, re-run verification to confirm nothing broke
+5. If verification fails after a simplification, revert that specific change and continue
+
+This step is the bridge between "code that works" and "code that's clean." It runs before review so the reviewer sees the best version of the code.
+
 ### Step 3: REVIEW
 In Desktop: suggest the built-in diff view + **Review code** button for inline feedback. In CLI: suggest `/review` for uncommitted changes. For complex work (3+ files, architectural changes, security-sensitive code), suggest `/grill` instead. For automated fix iteration (critic finds issues, you fix, critic re-audits), suggest `/qa`.
 
@@ -47,7 +58,7 @@ Handled by `session-lifecycle.md` Phase 3. In summary:
 2. Present the **Execution Checklist** (below).
 3. Ask: **"Are you satisfied with the changes?"**
 4. Offer an action menu via AskUserQuestion (multiSelect: true) with relevant options:
-   `/review`, `/grill`, `/qa`, `/techdebt`, `/simplify`, Preview, `/test-and-fix`, `/commit`, `/pr`, or "More changes needed".
+   `/review`, `/grill`, `/qa`, `/techdebt`, Preview, `/test-and-fix`, `/commit`, `/pr`, or "More changes needed".
 5. Execute chosen actions. If both `/commit` and `/pr` are selected, run sequentially.
 
 See `session-lifecycle.md` Phase 3 for the full action menu table and decision logic.
@@ -58,6 +69,7 @@ See `session-lifecycle.md` Phase 3 for the full action menu table and decision l
 ### Execution Checklist
 - [x/~/ ] Feature branch or worktree created (or quick fix on main — justified)
 - [x/~/ ] Verification passed (command: `...`)
+- [x/~/ ] `/simplify` run on changes (auto-fix applied, suggestions resolved)
 - [x/~/ ] `/review` run on changes
 - [x/~/ ] `/grill` run (if 3+ files or architectural/security changes)
 - [x/~/ ] All review findings addressed

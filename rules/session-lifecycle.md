@@ -28,7 +28,8 @@ Show an abbreviated 3-step checklist:
 Quick fix workflow:
  [ ] 1. Fix the issue
  [ ] 2. Verify (tests/type check)
- [ ] 3. /commit
+ [ ] 3. /simplify (lightweight — auto)
+ [ ] 4. /commit
 ```
 No worktree, no plan mode, no branching. Proceed directly to implementation.
 
@@ -49,7 +50,7 @@ Plan includes branch name, spec, and verification strategy. Plan is saved to dis
 
 ## Phase 2: Execution
 
-Follows `orchestrator-protocol.md` (Steps 0-5: Branch → Implement → Verify → Review → Fix → Re-verify).
+Follows `orchestrator-protocol.md` (Steps 0-5: Branch → Implement → Verify → Simplify → Review → Fix → Re-verify).
 
 If a worktree was created in Phase 0, the orchestrator Step 0 detects it and skips branch creation.
 
@@ -72,7 +73,6 @@ If a worktree was created in Phase 0, the orchestrator Step 0 detects it and ski
 | `/grill` | 3+ files or security/arch changes | Adversarial pre-push gate |
 | `/qa` | Complex changes | Automated critic-fixer loop |
 | `/techdebt` | Multi-file plans | Cleanup pass |
-| `/simplify` | Complex new code | Reduce unnecessary complexity |
 | Preview | Web/UI changes | See changes in browser |
 | `/test-and-fix` | When tests exist | Run test suite, fix failures |
 | `/commit` | When ready | Stage and commit changes |
@@ -121,7 +121,7 @@ After the PR is merged and closed:
 ```
 Session Start
   │
-  ├─ Quick fix? → fix → verify → /commit → done
+  ├─ Quick fix? → fix → verify → /simplify → /commit → done
   │
   └─ Non-trivial:
        │
@@ -130,7 +130,7 @@ Session Start
        │    └─ think → questions → blueprint → devil's advocate → propose
        │
        ├─ Plan approved → orchestrator activates
-       │    └─ branch → implement → verify → review → fix → re-verify
+       │    └─ branch → implement → verify → /simplify → review → fix → re-verify
        │
        ├─ Satisfaction check
        │    ├─ Not satisfied → loop back to implementation
