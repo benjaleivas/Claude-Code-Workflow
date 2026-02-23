@@ -107,12 +107,12 @@ After the PR is merged and closed:
 1. **Detect merge**: Check `gh pr status` or user confirms the PR is merged.
 2. **Switch to main**: `git checkout main && git pull --ff-only`
 3. **Delete merged branch**: `git branch -d {branch-name}` (local only — remote is deleted by GitHub on merge).
-4. **Delete worktree** (if used): The worktree prompt on session exit handles this, or manually with `git worktree remove {path}`.
+4. **Keep worktree**: Worktrees persist as read-only session archives (plans, logs, code). Only prune manually or via `/techdebt` when no longer needed.
 5. **End-of-session tasks**:
    - Suggest `/update-tracker` if significant work (3+ files or 50+ lines).
    - Suggest `/techdebt` for a final sweep.
    - Update session log (if plan-mode task).
-6. **Close**: Tell the user: "Branch and worktree cleaned up. Start a new session for your next task."
+6. **Close**: Tell the user: "Branch cleaned up. Start a new session for your next task." If a worktree was used, add: "Worktree preserved at `{path}` for future reference."
 
 ---
 
@@ -138,5 +138,5 @@ Session Start
        │
        ├─ Ship: /commit → /grill → /pr → CI
        │
-       └─ Cleanup: merge → delete branch → delete worktree → new session
+       └─ Cleanup: merge → delete branch → new session (worktree preserved)
 ```
