@@ -84,7 +84,7 @@ For non-trivial work, the system follows five phases. The orchestrator auto-acti
                            │
 ┌──────────────────────────▼──────────────────────────────────┐
 │  CLEANUP                                                    │
-│  Merge PR → delete branch → delete worktree → /techdebt    │
+│  Merge PR → delete branch → /techdebt (worktree preserved) │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -96,7 +96,7 @@ For non-trivial work, the system follows five phases. The orchestrator auto-acti
 
 **Review & Ship** asks if you're satisfied, offers relevant next actions (review, testing, commit, PR), and pushes to CI.
 
-**Cleanup** merges the PR, deletes the branch and worktree, and runs a tech debt sweep.
+**Cleanup** merges the PR, deletes the branch, and runs a tech debt sweep. Worktrees are preserved as session archives for future reference.
 
 ## Agents
 

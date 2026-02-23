@@ -82,6 +82,11 @@ If a session starts on main but should be on a feature branch:
 - If a relevant branch exists, switch to it
 - If not, follow the normal branching flow
 
+If a session needs context from past work:
+- Run `git worktree list` to see all preserved worktrees
+- Browse `{worktree}/.claude/session-logs/` and `{worktree}/.claude/plans/` for reasoning and decisions
+- Preserved worktrees are reference-only archives — do not reuse them for new work, start a fresh worktree instead
+
 For parallel work on independent tasks:
 - **CLI**: Use `claude --worktree` to start a session with automatic worktree isolation
 - **Desktop**: Each new session (+ New session) auto-creates an isolated worktree
@@ -92,3 +97,19 @@ Git worktrees are pre-branched — each worktree has its own branch by design. W
 - The orchestrator Step 0 detects it and skips branch creation
 - Branch naming still applies (the worktree branch should follow the convention)
 - The `/pr` flow works normally from a worktree
+
+### Worktree Setup Checklist
+
+Worktrees share git history but NOT untracked/ignored files. On first use, a worktree needs:
+1. **Install dependencies**: `npm install` (or equivalent) — `node_modules/` is gitignored and not shared
+2. **Copy environment files**: `.env.local`, `.env`, or similar — these are gitignored and must be copied from the main repo (`cp {main-repo}/.env.local .`)
+3. **Verify**: run the project's dev server or type checker to confirm the worktree is functional
+
+Do this BEFORE starting implementation — don't discover it mid-work.
+
+## Worktree Lifecycle
+
+Worktrees persist after sessions end as reference-only archives. They are NOT deleted automatically.
+- **Purpose**: future sessions can browse plans, session logs, and code to recover context
+- **Pruning**: manual — run `git worktree list`, cross-reference with merged branches, remove stale ones with `git worktree remove {path}`
+- **Rule**: never reuse an old worktree for new work — always create a fresh one
