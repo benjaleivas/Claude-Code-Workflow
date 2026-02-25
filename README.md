@@ -10,7 +10,7 @@ Claude Code is powerful out of the box, but it doesn't impose structure. It won'
 
 - **5-phase planning workflow** with devil's advocate review before implementation
 - **6 specialized agents** (code reviewer, debugger, security reviewer, test writer, and more) with persistent memory
-- **17 slash commands** for code review, commits, PRs, testing, and cleanup
+- **18 slash commands** for code review, commits, PRs, testing, presentations, and cleanup
 - **10 event-driven hooks** that auto-format code, scan for secrets, protect files, and manage sessions
 - **Git workflow enforcement** with automatic feature branching, PR tracking, and branch cleanup
 - **Docker isolation** for running Claude with full permissions in a sandboxed container
@@ -166,6 +166,12 @@ Multiple review tools exist because different situations need different levels o
 | `/pr` | Push branch and create a pull request (GitHub) or merge request (GitLab) |
 | `/fix-ci` | Diagnose and fix failing CI checks |
 
+### Creating
+
+| Command | Description |
+|---------|-------------|
+| `/frontend-slides` | Generate animation-rich HTML presentations with visual style discovery. Supports new decks and PPT conversion |
+
 ### Maintenance
 
 | Command | Description |
@@ -258,6 +264,7 @@ The install script creates symlinks from `~/.claude/` pointing to files in this 
 ├── hooks/              → repo/hooks/ (symlink)
 ├── rules/              → repo/rules/ (symlink)
 ├── container/          → repo/container/ (symlink)
+├── reference/          → repo/reference/ (symlink)
 ├── plans/              (local, not tracked)
 ├── session-logs/       (local, not tracked)
 ├── plugins/            (local, not tracked)
@@ -288,6 +295,10 @@ Replaces all symlinks with copies of the actual files, making `~/.claude/` fully
 1. Create `rules/<name>.md`
 2. Add to CLAUDE.md Detailed Rules section
 
+### New reference data
+1. Create `reference/<skill-name>/<file>.md` for supplemental data files used by commands
+2. Reference from the command via a Read instruction (e.g., `Read ~/.claude/reference/<skill-name>/<file>.md`)
+
 ## References
 
 Sources that informed the design of this workflow system:
@@ -302,6 +313,7 @@ Sources that informed the design of this workflow system:
 | [Intelligent AI Delegation](https://arxiv.org/abs/2602.11865) | Academic paper | Agent failure handling, stall detection, team cost heuristics |
 | [Intro to Multiagent Systems](https://www.linkedin.com/feed/update/urn:li:activity:7328490306763481088/) | Celeste Bean (Stanford GSB) | Multiagent design patterns, agent-friendly task classification |
 | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | OWASP Foundation | Security reviewer agent's vulnerability checklist |
+| [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | zarazhangrui | `/frontend-slides` command — zero-dependency HTML presentation generator with 12 visual presets |
 
 ## License
 

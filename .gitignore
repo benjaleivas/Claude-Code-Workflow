@@ -24,6 +24,8 @@
 !container/**
 !hooks/
 !hooks/**
+!reference/
+!reference/**
 !rules/
 !rules/**
 
