@@ -17,7 +17,10 @@ On the **first message** of every new session, present an interactive setup chec
    - Risky / data-heavy → suggest `/container`
 4. **Worktree**: Ask the user to create a worktree (Desktop: worktree button; CLI: `claude --worktree` or `/worktree`). This isolates the work and auto-creates a feature branch.
    - If the user declines, fall back to manual branch creation in the orchestrator Step 0.
-5. **Plan mode**: Enter plan mode for the task. Follow `plan-mode-workflow.md`.
+5. **Architecture complexity**: Ask whether this task is architecturally ambiguous (multiple viable approaches, high cost of choosing wrong). Use AskUserQuestion:
+   - **Standard planning** (default) — single agent with explicit divergence. `<brainstorm>` must list 2-3 named approaches before committing to one.
+   - **Competing architectures** — 2-3 parallel Plan agents, each building a full blueprint for a different architectural direction. User picks the winner or synthesizes. See `plan-mode-workflow.md` Phase 2.5.
+6. **Plan mode**: Enter plan mode for the task. Follow `plan-mode-workflow.md`.
 
 Present this as an interactive flow, prompting the user at each decision point (folder, worktree yes/no, branch name if manual).
 
@@ -127,7 +130,8 @@ Session Start
        │
        ├─ Create worktree (isolate work)
        ├─ Enter plan mode
-       │    └─ think → questions → blueprint → devil's advocate → propose
+       │    ├─ Standard: think → questions → blueprint → devil's advocate → propose
+       │    └─ Competing: think → questions → 2-3 parallel plans → pick/synthesize → devil's advocate → propose
        │
        ├─ Plan approved → orchestrator activates
        │    └─ branch → implement → verify → /simplify → review → fix → re-verify
