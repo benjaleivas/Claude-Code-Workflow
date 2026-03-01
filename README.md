@@ -10,7 +10,7 @@ Claude Code is powerful out of the box, but it doesn't impose structure. It won'
 
 - **5-phase planning workflow** with devil's advocate review before implementation
 - **6 specialized agents** (code reviewer, debugger, security reviewer, test writer, and more) with persistent memory
-- **18 slash commands** for code review, commits, PRs, testing, presentations, and cleanup
+- **19 slash commands** for code review, commits, PRs, testing, presentations, and cleanup (17 legacy commands + 2 modern skills with progressive disclosure)
 - **10 event-driven hooks** that auto-format code, scan for secrets, protect files, and manage sessions
 - **Git workflow enforcement** with automatic feature branching, PR tracking, and branch cleanup
 - **Docker isolation** for running Claude with full permissions in a sandboxed container
@@ -168,9 +168,9 @@ Multiple review tools exist because different situations need different levels o
 
 ### Creating
 
-| Command | Description |
-|---------|-------------|
-| `/frontend-slides` | Generate animation-rich HTML presentations with visual style discovery. Supports new decks and PPT conversion |
+| Command | Format | Description |
+|---------|--------|-------------|
+| `/frontend-slides` | Modern skill | Generate animation-rich HTML presentations with visual style discovery. Supports new decks and PPT conversion |
 
 ### Maintenance
 
@@ -261,10 +261,10 @@ The install script creates symlinks from `~/.claude/` pointing to files in this 
 ├── settings.json       → repo/settings.json (symlink)
 ├── agents/             → repo/agents/ (symlink)
 ├── commands/           → repo/commands/ (symlink)
+├── skills/             → repo/skills/ (symlink)
 ├── hooks/              → repo/hooks/ (symlink)
 ├── rules/              → repo/rules/ (symlink)
 ├── container/          → repo/container/ (symlink)
-├── reference/          → repo/reference/ (symlink)
 ├── plans/              (local, not tracked)
 ├── session-logs/       (local, not tracked)
 ├── plugins/            (local, not tracked)
@@ -283,9 +283,16 @@ Replaces all symlinks with copies of the actual files, making `~/.claude/` fully
 1. Create `agents/<name>.md` with YAML frontmatter (name, description, tools, model, memory, maxTurns)
 2. Add to `subagent-patterns.md` table and CLAUDE.md Custom Agents line
 
-### New command
-1. Create `commands/<name>.md` with YAML frontmatter (description, optionally context/allowed-tools)
+### New command (legacy format)
+1. Create `commands/<name>.md` with YAML frontmatter (`name`, `description`, optionally `context`/`allowed-tools`)
 2. Add to appropriate section in CLAUDE.md slash commands
+3. Best for simple, single-file commands
+
+### New skill (modern format)
+1. Create `skills/<name>/SKILL.md` with YAML frontmatter (`name`, `description`)
+2. Add `references/`, `scripts/`, `assets/` subdirectories as needed
+3. Only SKILL.md loads initially — reference files load on demand (progressive disclosure)
+4. Best for complex commands with templates, scripts, or large reference data
 
 ### New hook
 1. Create `hooks/<name>.sh` (make executable)
@@ -294,10 +301,6 @@ Replaces all symlinks with copies of the actual files, making `~/.claude/` fully
 ### New rule
 1. Create `rules/<name>.md`
 2. Add to CLAUDE.md Detailed Rules section
-
-### New reference data
-1. Create `reference/<skill-name>/<file>.md` for supplemental data files used by commands
-2. Reference from the command via a Read instruction (e.g., `Read ~/.claude/reference/<skill-name>/<file>.md`)
 
 ## References
 
@@ -313,6 +316,7 @@ Sources that informed the design of this workflow system:
 | [Intelligent AI Delegation](https://arxiv.org/abs/2602.11865) | Academic paper | Agent failure handling, stall detection, team cost heuristics |
 | [Intro to Multiagent Systems](https://www.linkedin.com/feed/update/urn:li:activity:7328490306763481088/) | Celeste Bean (Stanford GSB) | Multiagent design patterns, agent-friendly task classification |
 | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | OWASP Foundation | Security reviewer agent's vulnerability checklist |
+| [Complete Guide to Building Skills for Claude](https://www.anthropic.com/engineering/claude-code-skills-guide) | Anthropic | Skill format best practices — YAML frontmatter, progressive disclosure, negative triggers, agent descriptions |
 | [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | zarazhangrui | `/frontend-slides` command — zero-dependency HTML presentation generator with 12 visual presets |
 
 ## License
