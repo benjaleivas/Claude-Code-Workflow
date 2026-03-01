@@ -1,4 +1,5 @@
 ---
+name: grill
 description: Adversarial code review. Skeptical staff engineer perspective. Use before pushing code.
 context: fork
 agent: general-purpose

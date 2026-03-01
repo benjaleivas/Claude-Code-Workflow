@@ -1,5 +1,6 @@
 ---
-description: Manage isolated Docker containers for YOLO mode, data projects, or risky operations.
+name: container
+description: Manage isolated Docker containers for YOLO mode, data projects, or risky operations. Use when you need an unrestricted environment for experiments or data processing.
 ---
 
 # Container Management

@@ -1,3 +1,7 @@
+---
+description: Commit current changes with a clear message. Use after completing a unit of work — stages files, writes WHY-focused commit messages, and verifies success.
+---
+
 Commit the current changes with a clear message.
 
 1. Run `git status` to see all changes (never use -uall flag)

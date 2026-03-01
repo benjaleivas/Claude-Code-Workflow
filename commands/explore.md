@@ -1,5 +1,6 @@
 ---
-description: Enter exploration mode with relaxed quality gates. For prototyping, data experiments, and quick proofs-of-concept.
+name: explore
+description: Enter exploration mode with relaxed quality gates. For prototyping, data experiments, and quick proofs-of-concept. Do NOT use for production-ready implementations.
 ---
 
 # Exploration Mode

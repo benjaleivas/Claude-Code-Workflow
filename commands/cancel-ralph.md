@@ -1,3 +1,7 @@
+---
+description: Cancel the active Ralph Wiggum iteration loop. Use when the autonomous test-fix loop should stop early.
+---
+
 Cancel the active Ralph Wiggum iteration loop.
 
 ## Current Loop State

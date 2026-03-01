@@ -1,3 +1,7 @@
+---
+description: Push the current branch and create a pull request (GitHub) or merge request (GitLab). Use when code is committed, reviewed, and ready to ship.
+---
+
 Push the current branch and create a pull request (GitHub) or merge request (GitLab).
 
 ## Provider Detection

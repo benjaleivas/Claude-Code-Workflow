@@ -1,6 +1,6 @@
 ---
 name: debugger
-description: Debugging specialist using 5-phase root cause analysis. Use when encountering errors, test failures, unexpected behavior, or CI failures.
+description: Debugging specialist using 5-phase root cause analysis (capture, hypothesize, isolate, root cause, fix). Use when encountering errors, test failures, unexpected behavior, or CI failures. Do NOT use for code review or feature implementation.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 memory: user

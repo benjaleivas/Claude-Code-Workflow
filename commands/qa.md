@@ -1,5 +1,6 @@
 ---
-description: Automated quality assurance loop. Read-only critic finds issues, you fix them, critic re-audits. Max 3 rounds.
+name: qa
+description: Automated quality assurance loop. Read-only critic finds issues, you fix them, critic re-audits. Max 3 rounds. Use for thorough automated review of complex changes.
 ---
 
 # Quality Assurance Loop

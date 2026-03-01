@@ -1,3 +1,7 @@
+---
+description: End-of-session codebase cleanup. Use at the end of a session or after multi-file changes to find and remove duplicated code, dead code, unused imports, and resolved TODOs.
+---
+
 End-of-session codebase cleanup. Find and kill duplicated and dead code.
 
 1. Scan the codebase for:

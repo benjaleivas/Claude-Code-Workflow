@@ -1,6 +1,6 @@
 ---
 name: supabase-specialist
-description: Supabase expert for auth, database, RLS, edge functions, storage, and migrations. Use for any Supabase-related work.
+description: Supabase expert for auth, database, RLS, edge functions, storage, and migrations. Use when designing schemas, writing RLS policies, implementing auth flows, building edge functions, or configuring storage and real-time subscriptions.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 memory: user

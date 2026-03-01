@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Thorough code review with dependency-graph awareness and persistent memory. Use for pre-commit reviews, PR reviews, and as the critic in /qa loops.
+description: Thorough code review with dependency-graph awareness and persistent memory. Use for pre-commit reviews, PR reviews, and as the critic in /qa loops. Do NOT use for security-specific audits (use security-reviewer instead).
 tools: Read, Grep, Glob, Bash
 model: inherit
 memory: user

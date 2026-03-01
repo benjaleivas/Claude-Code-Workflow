@@ -1,3 +1,7 @@
+---
+description: Fix failing CI checks. Use when CI/CD pipeline fails — fetches logs, diagnoses the root cause, and applies targeted fixes.
+---
+
 Fix failing CI. Don't micromanage — just diagnose and fix.
 
 ## Provider Detection

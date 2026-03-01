@@ -1,6 +1,6 @@
 ---
 name: security-reviewer
-description: Security vulnerability detection. Use when modifying auth, user input handling, API integrations, database queries, or RLS policies.
+description: Security vulnerability detection using OWASP Top 10 checks and secrets scanning. Use when modifying auth, user input handling, API integrations, database queries, or RLS policies. Do NOT use for general code quality (use code-reviewer instead).
 tools: Read, Grep, Glob, Bash
 model: inherit
 memory: user

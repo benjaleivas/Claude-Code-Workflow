@@ -1,3 +1,7 @@
+---
+description: Update the work tracker with this session's work. Use after completing significant work (3+ files or 50+ lines) to record what was accomplished.
+---
+
 Update the work tracker with this session's work.
 
 **MANDATORY**: Run after completing any approved plan (successful or not).

@@ -1,3 +1,7 @@
+---
+description: Run the test suite and fix any failures. Use after making changes that could break existing tests — detects the test runner, executes tests, and fixes failures.
+---
+
 Run the test suite and fix any failures.
 
 1. Determine the test command for this project:
