@@ -1,5 +1,6 @@
 ---
-description: Review uncommitted changes. Returns SHIP/ALMOST/REWORK verdict.
+name: review
+description: Review uncommitted changes. Returns SHIP/ALMOST/REWORK verdict. Use as a quick pre-commit check for code quality and correctness.
 ---
 
 Review uncommitted changes and suggest improvements.

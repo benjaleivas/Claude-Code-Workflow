@@ -1,3 +1,7 @@
+---
+description: Start an autonomous test iteration loop. Use when tests are failing and manual fix-run cycles are tedious — runs tests, fixes failures, repeats until all pass (max 10 iterations).
+---
+
 Start an autonomous test iteration loop. Runs tests, fixes failures, repeats until all pass (max 10 iterations).
 
 ## Current Loop State

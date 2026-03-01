@@ -1,6 +1,6 @@
 ---
 name: expo-specialist
-description: React Native and Expo expert for mobile app development. Use for navigation, native modules, platform-specific code, app store deployment, and Expo SDK features.
+description: React Native and Expo expert for mobile app development. Use for navigation (expo-router), native modules, platform-specific code, EAS builds, app store deployment, and Expo SDK features. Do NOT use for web-only frontend work (use frontend-design instead).
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 memory: user

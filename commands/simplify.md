@@ -1,5 +1,6 @@
 ---
-description: Clean and simplify code. Runs after every implementation. Checks structure, naming, patterns, and complexity.
+name: simplify
+description: Clean and simplify code. Runs after every implementation. Checks structure, naming, patterns, and complexity. Auto-runs as part of the orchestrator loop.
 ---
 
 Clean and simplify the code that was just written. Act as a code-quality craftsman.

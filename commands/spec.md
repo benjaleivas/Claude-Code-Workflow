@@ -1,3 +1,7 @@
+---
+description: Generate an upfront specification before coding. Use for medium-complexity tasks involving external services, data processing, or complex state that don't need full plan mode.
+---
+
 Generate an upfront specification before coding. Use this for medium-complexity tasks that don't need full plan mode.
 
 ## Instructions

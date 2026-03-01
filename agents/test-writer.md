@@ -1,6 +1,6 @@
 ---
 name: test-writer
-description: Generate tests for new or modified code. Use after implementing features, fixing bugs, or when test coverage gaps are identified.
+description: Generate tests for new or modified code. Auto-detects test framework (Jest, Vitest, pytest, Deno). Use after implementing features, fixing bugs, or when test coverage gaps are identified. Covers happy path, edge cases, and error paths.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 memory: project

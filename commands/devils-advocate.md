@@ -1,4 +1,5 @@
 ---
+name: devils-advocate
 description: Challenge the current approach with systematic, good-faith skepticism. Use BEFORE finalizing any non-trivial plan.
 context: fork
 agent: general-purpose

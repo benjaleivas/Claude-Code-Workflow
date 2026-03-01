@@ -1,3 +1,7 @@
+---
+description: Visually verify UI changes in the browser. Use after frontend or UI changes to check layout, console errors, and visual regressions via preview server or Chrome.
+---
+
 Visually verify UI changes in the browser.
 
 **Preferred**: If `.claude/launch.json` exists and `preview_*` tools are available, use the preview server (no Chrome needed). Otherwise, fall back to Chrome integration.

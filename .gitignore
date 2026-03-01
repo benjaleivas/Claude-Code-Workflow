@@ -28,6 +28,8 @@
 !reference/**
 !rules/
 !rules/**
+!skills/
+!skills/**
 
 # ── Still ignore within tracked dirs ──
 container/projects/
