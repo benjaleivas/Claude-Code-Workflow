@@ -18,7 +18,7 @@ mkdir -p "$CLAUDE_DIR"
 
 # Backup existing non-symlink files
 backup_needed=false
-for item in CLAUDE.md settings.json agents commands hooks rules container; do
+for item in CLAUDE.md settings.json agents commands skills hooks rules container; do
     target="$CLAUDE_DIR/$item"
     if [ -e "$target" ] && [ ! -L "$target" ]; then
         backup_needed=true
@@ -29,7 +29,7 @@ done
 if [ "$backup_needed" = true ]; then
     echo "Backing up existing config to $BACKUP_DIR"
     mkdir -p "$BACKUP_DIR"
-    for item in CLAUDE.md settings.json agents commands hooks rules container; do
+    for item in CLAUDE.md settings.json agents commands skills hooks rules container; do
         target="$CLAUDE_DIR/$item"
         if [ -e "$target" ] && [ ! -L "$target" ]; then
             cp -r "$target" "$BACKUP_DIR/"
@@ -47,7 +47,7 @@ for file in CLAUDE.md settings.json; do
 done
 
 # Symlink directories
-for dir in agents commands hooks rules container; do
+for dir in agents commands skills hooks rules container; do
     rm -rf "$CLAUDE_DIR/$dir"
     ln -sf "$REPO_DIR/$dir" "$CLAUDE_DIR/$dir"
     echo "Linked: $dir/"

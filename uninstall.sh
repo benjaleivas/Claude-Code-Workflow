@@ -8,7 +8,7 @@ CLAUDE_DIR="$HOME/.claude"
 echo "=== Claude Workflow Uninstaller ==="
 echo ""
 
-for item in CLAUDE.md settings.json agents commands hooks rules container; do
+for item in CLAUDE.md settings.json agents commands skills hooks rules container; do
     target="$CLAUDE_DIR/$item"
     if [ -L "$target" ]; then
         # Resolve symlink, copy contents, remove symlink
