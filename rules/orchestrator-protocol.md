@@ -84,6 +84,69 @@ Legend: `[x]` = done, `[~]` = not applicable / skipped with justification, `[ ]`
 
 If any box is `[ ]` without justification, go back and complete it before asking for satisfaction.
 
+## Agent Sequences (Optional)
+
+For complex workflows, the orchestrator can invoke agents in a deliberate sequence during Step 1 (IMPLEMENT). This is optional — most tasks don't need it. Use agent sequences when the plan explicitly calls for specialized analysis at specific points.
+
+### Predefined Sequences
+
+| Workflow | Sequence | Notes |
+|----------|----------|-------|
+| **Feature** | architect thinking (in plan mode) → implement → code-reviewer + security-reviewer (parallel) → test-writer | Architect runs during planning, not execution |
+| **Bugfix** | debugger → implement fix → code-reviewer → test-writer | Debugger finds root cause before any code changes |
+| **Refactor** | code-reviewer (pre-state) → implement → code-reviewer (post-state) → simplify | Pre/post review catches regressions |
+| **Security audit** | security-reviewer → code-reviewer → implement fixes → security-reviewer (re-audit) | Two-pass security review brackets the fixes |
+
+### When to Use Sequences
+
+- The plan blueprint explicitly names agents to invoke at specific steps
+- The task spans multiple domains (frontend + backend + security)
+- Multiple agents need to contribute findings before implementation begins
+
+### When NOT to Use Sequences
+
+- Simple feature implementation (just implement and verify)
+- The plan doesn't mention specialized analysis
+- Single-domain changes with straightforward verification
+
+### Handoff Documents
+
+When agents run in sequence, each passes a handoff document to the next. This prevents context loss between agents.
+
+```markdown
+## Handoff: {from-agent} → {to-agent}
+
+### Key Discoveries
+- [What was found that the next agent needs to know]
+
+### Decisions Made
+- [Choices already locked in — don't re-litigate]
+
+### Open Questions
+- [Unresolved items the next agent should address]
+
+### Files Modified
+- [Paths changed so far]
+
+### Verification Results
+- [What passed, what failed, what wasn't tested]
+
+### Recommended Next Steps
+- [What the next agent should focus on]
+```
+
+Include the handoff document in the agent's prompt when spawning it. The receiving agent should read it first before starting its own work.
+
+### Parallel Agent Execution
+
+Agents that don't depend on each other's output can run in parallel:
+- code-reviewer + security-reviewer (different concerns, same files)
+- test-writer for module A + test-writer for module B (different files)
+
+Use the Agent tool's parallel invocation (multiple tool calls in one message) for these. Synthesize findings in the main session before proceeding.
+
+---
+
 ## Important Notes
 - This protocol uses your existing slash commands — it doesn't replace them
 - Verification pass/fail is the quality gate (no numeric scoring)

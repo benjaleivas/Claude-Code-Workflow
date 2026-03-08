@@ -12,6 +12,7 @@ These transversal agents are always available via `~/.claude/agents/`. They have
 | `supabase-specialist` | user | All + /spec | Any Supabase work (auth, DB, edge functions) |
 | `code-reviewer` | user | Read, Grep, Glob, Bash | Pre-commit reviews, PR reviews, /qa critic |
 | `expo-specialist` | user | All | React Native/Expo mobile development |
+| `architect` | — | Read, Grep, Glob, Bash (read-only) | System design, major refactor, technology selection |
 
 These supplement (not replace) the ad-hoc subagent patterns below.
 
@@ -83,6 +84,51 @@ Patterns:
 - **Cross-layer feature**: frontend teammate, backend teammate, test teammate — each owns their files
 - **Delegate mode**: press Shift+Tab so the lead only coordinates, never implements
 - **Plan approval**: require teammates to plan before implementing for risky tasks
+
+## Model Selection
+
+When spawning subagents via the Agent tool, choose the `model` parameter based on what the agent needs to do. This is advisory — use judgment, but these defaults save cost without sacrificing quality.
+
+| Task Type | Model | Rationale |
+|-----------|-------|-----------|
+| File search / exploration | `haiku` | Fast, cheap, read-only — perfect for Glob/Grep/Read tasks |
+| Code review (single file) | `haiku` | Pattern matching against known checklists |
+| Code review (multi-file, architectural) | `sonnet` | Needs cross-file reasoning |
+| Implementation / editing | `sonnet` | Good balance of speed + quality for code generation |
+| Architecture / system design | `opus` | Deep reasoning, trade-off analysis, long-horizon planning |
+| Security review | `sonnet` | Structured OWASP checklist, moderate reasoning |
+| Debugging (simple) | `sonnet` | Standard hypothesis-test cycle |
+| Debugging (complex / race conditions) | `opus` | Root cause analysis needs depth |
+| Test writing | `sonnet` | Templated generation with some reasoning |
+| Documentation | `haiku` | Straightforward text generation |
+
+### Rules of Thumb
+
+- **Read-only tasks → `haiku`**: If the agent only uses Read, Grep, Glob, and returns findings, use `haiku`. It's 10x cheaper and fast enough.
+- **Code generation → `sonnet`**: Most implementation and review tasks. The workhorse.
+- **Deep reasoning → `opus`**: Architecture decisions, complex debugging, competing hypothesis evaluation. Use sparingly — it's the most expensive but catches things others miss.
+- **When in doubt → `sonnet`**: Safe default. Only upgrade to `opus` if the task clearly requires deep multi-step reasoning.
+
+### Example
+
+```
+Agent tool call:
+  subagent_type: "Explore"
+  model: "haiku"           ← read-only exploration, haiku is ideal
+  prompt: "Find all files that import the auth module..."
+
+Agent tool call:
+  subagent_type: "general-purpose"
+  model: "sonnet"          ← needs to write code
+  prompt: "Implement the validation logic for..."
+
+Agent tool call:
+  subagent_type: "Plan"
+  model: "opus"            ← architecture decision, needs depth
+  prompt: "Design the data flow for..."
+```
+
+---
 
 ## Agent Failure Handling
 

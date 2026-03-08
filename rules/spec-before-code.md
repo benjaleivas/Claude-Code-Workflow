@@ -21,5 +21,40 @@ Before implementing any non-trivial task, outline the specification FIRST. This 
 - Outside plan mode: invoke `/spec` for a standalone spec
 - Specs are saved as part of the plan artifact on disk
 
+## Research Phase (Before Choosing Tools)
+
+Before committing to a library, service, or architectural approach, search the ecosystem:
+
+### Search Order
+1. **MCP servers first**: Check configured servers (`search_mcp_registry`) — if an integration already exists, use it instead of building a wrapper
+2. **Package registries**: npm (TypeScript), PyPI (Python), Swift Package Index (Swift) — search for existing solutions
+3. **GitHub**: Look for well-maintained implementations of the pattern you need
+
+### Quick Evaluation (3-5 options max)
+For each candidate, check:
+- Last commit date (active maintenance?)
+- Open issues count and responsiveness
+- License compatibility (MIT/Apache preferred)
+- Dependency footprint (fewer = better)
+- Weekly downloads / stars (adoption signal)
+
+### Four Outcomes
+| Outcome | When | Action |
+|---------|------|--------|
+| **Adopt** | Existing solution fits well | Install, link to docs, use as-is |
+| **Extend** | Almost fits, needs a thin wrapper | Write adapter/wrapper, document the gap |
+| **Compose** | No single solution, but parts exist | Integrate multiple sources, document the glue |
+| **Build** | Nothing suitable or too risky to depend on | Roll custom, document why existing options were rejected |
+
+### When to Research
+- Adding a new dependency or service integration
+- Choosing between architectural approaches (e.g., state management, auth strategy)
+- Any task where you'd otherwise guess at the "right" library
+
+### When to Skip
+- The project already has an established pattern for this type of work
+- The user specified exactly what to use
+- The task is purely internal logic with no external dependencies
+
 ## Key Principle
 When something fails after implementation, ask: "Was this in the spec?" If not, the spec was incomplete — fix the spec, then fix the code. Over time, specs get better and iterations get shorter.

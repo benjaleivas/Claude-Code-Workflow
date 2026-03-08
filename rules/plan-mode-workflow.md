@@ -68,6 +68,30 @@ If the task was NOT flagged for competing architectures, skip this phase entirel
 - Rollback strategy for risky changes
 - **Branch name**: `{type}/{description}` following the branching convention (see `branching-strategy.md`)
 - **Simplify scope note** (optional): if the plan intentionally uses verbose patterns for documented reasons (e.g., readability, explicit error handling), note it here so Step 2c (`/simplify`) does not undo deliberate choices
+- **ADR section** (for architectural decisions): when the plan involves choosing between fundamentally different approaches (database design, service architecture, state management strategy), document the decision in ADR format:
+
+### Architecture Decision Record (ADR) — Template
+```markdown
+## ADR: [Decision Title]
+
+### Context
+[What is the situation? What forces are at play?]
+
+### Decision
+[What was decided and why]
+
+### Consequences
+**Positive**: [What improves]
+**Negative**: [What gets harder or is accepted as a trade-off]
+
+### Alternatives Considered
+[Brief summary of rejected approaches and why]
+
+### Trade-offs Accepted
+[Explicit acknowledgment of what was sacrificed]
+```
+
+Use ADR format when the `<decision>` tag from Phase 1 involves significant architectural trade-offs. For simple implementation plans, the standard `<decision>` justification is sufficient — don't add ADR overhead to every plan.
 
 **Save to disk**: Write the plan to `{project}/.claude/plans/YYYY-MM-DD_description.md`. This makes it recoverable after compression and across sessions.
 

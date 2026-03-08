@@ -42,7 +42,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 - After committing: if the work is ready to push, suggest `/grill` before `/pr`
 - After writing ANY code: `/simplify` runs automatically (part of the orchestrator loop and quick fix workflow)
 - If tests exist: suggest `/test-and-fix` after changes that could break things
-- If tests are failing in a loop and manual iteration is tedious: suggest `/ralph-loop`
+- If tests are failing in a loop and manual iteration is tedious: suggest `/ralph-loop` (also supports `--mode feature|refactor|migrate` for non-test loops)
 - For thorough automated review with fix loop: suggest `/qa` (or `/qa security` for security focus)
 - For prototyping or experiments: suggest `/explore` to enter exploration mode
 
@@ -153,10 +153,11 @@ These files contain detailed patterns extracted from this document. They auto-lo
 - **Session Lifecycle** — `session-lifecycle.md` — Full session lifecycle: setup checklist → planning → execution → satisfaction check → ship → cleanup. Governs every session across all projects.
 - **Structured Thinking** — `structured-thinking.md` — XML tags (`<brainstorm>`, `<analysis>`, `<decision>`) and anti-hallucination verification. MANDATORY for plan mode.
 - **Plan Mode Workflow** — `plan-mode-workflow.md` — 5-phase workflow (Thinking → Questions → Blueprint with specs → Devil's Advocate → Propose). Plans saved to disk. Orchestrator activates after approval.
-- **Orchestrator Protocol** — `orchestrator-protocol.md` — Post-plan execution loop: implement → verify → /review → fix → re-verify → /commit. Uses existing slash commands.
-- **Spec Before Code** — `spec-before-code.md` — Data shapes, contracts, edge cases, success criteria. Required in plan Phase 3 and via `/spec`.
-- **Subagent Patterns** — `subagent-patterns.md` — Debugger, Code Reviewer, Security Reviewer, Bug Fixer, Agent Teams.
-- **Custom Agents** — `~/.claude/agents/` — Code Reviewer, Debugger, Security Reviewer, Test Writer, Supabase Specialist, Expo Specialist. All have persistent memory.
+- **Orchestrator Protocol** — `orchestrator-protocol.md` — Post-plan execution loop: implement → verify → /review → fix → re-verify → /commit. Uses existing slash commands. Includes optional agent sequences for feature/bugfix/refactor workflows.
+- **Spec Before Code** — `spec-before-code.md` — Data shapes, contracts, edge cases, success criteria. Required in plan Phase 3 and via `/spec`. Includes research phase (MCP-first → registries → GitHub) before choosing tools/libraries.
+- **Subagent Patterns** — `subagent-patterns.md` — Debugger, Code Reviewer, Security Reviewer, Bug Fixer, Agent Teams, Model Selection.
+- **Custom Agents** — `~/.claude/agents/` — Architect, Code Reviewer, Debugger, Security Reviewer, Test Writer, Supabase Specialist, Expo Specialist. All have persistent memory.
+- **Language Rules** — `typescript.md`, `python.md`, `swift.md` — Personal corrections and gotchas per language. Auto-loaded via `paths` frontmatter when working on matching files.
 - **Session Logging** — `session-logging.md` — Compression-resistant reasoning history. Only for plan-mode tasks. Three triggers: after approval, during implementation, at session end.
 - **[LEARN] System** — `learn-system.md` — Persistent tagged corrections in project MEMORY.md.
 - **New Project Setup** — `new-project-setup.md` — Project CLAUDE.md scaffolding + plans/, session-logs/, MEMORY.md directories.
