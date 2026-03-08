@@ -10,7 +10,7 @@ Claude Code is powerful out of the box, but it doesn't impose structure. It won'
 
 - **5-phase planning workflow** with devil's advocate review before implementation
 - **6 specialized agents** (code reviewer, debugger, security reviewer, test writer, and more) with persistent memory
-- **19 slash commands** for code review, commits, PRs, testing, presentations, and cleanup (17 legacy commands + 2 modern skills with progressive disclosure)
+- **20 slash commands** for code review, commits, PRs, testing, presentations, UI/UX design, and cleanup (17 legacy commands + 3 modern skills with progressive disclosure)
 - **10 event-driven hooks** that auto-format code, scan for secrets, protect files, and manage sessions
 - **Git workflow enforcement** with automatic feature branching, PR tracking, and branch cleanup
 - **Docker isolation** for running Claude with full permissions in a sandboxed container
@@ -171,6 +171,7 @@ Multiple review tools exist because different situations need different levels o
 | Command | Format | Description |
 |---------|--------|-------------|
 | `/frontend-slides` | Modern skill | Generate animation-rich HTML presentations with visual style discovery. Supports new decks and PPT conversion |
+| `/ui-ux-pro-max` | Modern skill | UI/UX design intelligence with BM25 search over 50 styles, 21 palettes, 50 font pairings, 20 chart patterns, and 13 stack-specific guidelines. Zero dependencies |
 
 ### Maintenance
 
@@ -318,6 +319,7 @@ Sources that informed the design of this workflow system:
 | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | OWASP Foundation | Security reviewer agent's vulnerability checklist |
 | [Complete Guide to Building Skills for Claude](https://www.anthropic.com/engineering/claude-code-skills-guide) | Anthropic | Skill format best practices — YAML frontmatter, progressive disclosure, negative triggers, agent descriptions |
 | [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | zarazhangrui | `/frontend-slides` command — zero-dependency HTML presentation generator with 12 visual presets |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | nextlevelbuilder | `/ui-ux-pro-max` skill — BM25-powered UI/UX design intelligence with 25 CSV databases covering styles, colors, typography, charts, and 13 framework-specific guidelines |
 
 ## License
 
