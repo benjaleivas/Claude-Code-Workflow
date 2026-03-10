@@ -320,6 +320,7 @@ Sources that informed the design of this workflow system:
 | [Complete Guide to Building Skills for Claude](https://www.anthropic.com/engineering/claude-code-skills-guide) | Anthropic | Skill format best practices — YAML frontmatter, progressive disclosure, negative triggers, agent descriptions |
 | [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | zarazhangrui | `/frontend-slides` command — zero-dependency HTML presentation generator with 12 visual presets |
 | [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | nextlevelbuilder | `/ui-ux-pro-max` skill — BM25-powered UI/UX design intelligence with 25 CSV databases covering styles, colors, typography, charts, and 13 framework-specific guidelines |
+| [How I use Claude Code (Meta Staff Engineer Tips)](https://www.youtube.com/watch?v=mZzhfPle9QU) | John Kim (Staff Engineer, Meta) | 50 practical tips from daily use — CLAUDE.md structure, plan mode workflow, parallel instances with git worktrees, hooks automation, subagent patterns, plugin ecosystem |
 
 ## License
 
