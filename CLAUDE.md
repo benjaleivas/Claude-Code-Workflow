@@ -58,6 +58,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 ### End of Session
 - Always suggest `/techdebt` before closing out a session
 - After significant work (3+ files or 50+ lines): suggest `/update-tracker`
+- Suggest `/revise-claude-md` periodically (monthly or after intensive work) to clean stale [LEARN] entries
 - Always suggest `/commit` for any uncommitted work
 
 ## Workflow Principles
@@ -161,4 +162,5 @@ These files contain detailed patterns extracted from this document. They auto-lo
 - **Session Logging** — `session-logging.md` — Compression-resistant reasoning history. Only for plan-mode tasks. Three triggers: after approval, during implementation, at session end.
 - **[LEARN] System** — `learn-system.md` — Persistent tagged corrections in project MEMORY.md.
 - **New Project Setup** — `new-project-setup.md` — Project CLAUDE.md scaffolding + plans/, session-logs/, MEMORY.md directories.
+- **Context Management** — `context-management.md` — MCP context budget, context hygiene, pre-compaction checklist, recovery after compaction.
 - **Branching Strategy** — `branching-strategy.md` — Feature branch convention, orchestrator Step 0, quick fix exemption, cleanup.

@@ -115,6 +115,7 @@ After the PR is merged and closed:
    - Suggest `/update-tracker` if significant work (3+ files or 50+ lines).
    - Suggest `/techdebt` for a final sweep.
    - Update session log (if plan-mode task).
+   - Update `docs/TODO.md` if tasks were completed or new ones discovered.
 6. **Close**: Tell the user: "Branch cleaned up. Start a new session for your next task." If a worktree was used, add: "Worktree preserved at `{path}` for future reference."
 
 ---
