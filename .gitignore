@@ -31,4 +31,5 @@
 
 # ── Still ignore within tracked dirs ──
 container/projects/
+**/__pycache__/
 .DS_Store

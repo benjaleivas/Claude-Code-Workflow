@@ -29,4 +29,16 @@ fi
 echo "" >> "$LATEST_LOG"
 echo "---" >> "$LATEST_LOG"
 echo "**Context compressed at $(date '+%Y-%m-%d %H:%M')**. Review entries above if context was lost." >> "$LATEST_LOG"
+
+BRANCH=$(git -C "$WORK_DIR" branch --show-current 2>/dev/null || echo "unknown")
+MODIFIED=$(git -C "$WORK_DIR" diff --name-only 2>/dev/null | head -10)
+STAGED=$(git -C "$WORK_DIR" diff --cached --name-only 2>/dev/null | head -10)
+
+echo "**Branch**: \`$BRANCH\`" >> "$LATEST_LOG"
+if [ -n "$MODIFIED" ]; then
+  echo "**Modified files**: $MODIFIED" >> "$LATEST_LOG"
+fi
+if [ -n "$STAGED" ]; then
+  echo "**Staged files**: $STAGED" >> "$LATEST_LOG"
+fi
 echo "---" >> "$LATEST_LOG"

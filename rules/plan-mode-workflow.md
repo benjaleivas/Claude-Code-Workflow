@@ -114,6 +114,7 @@ Present the plan only after phases 1-4 are complete. After user approval, the or
 - [x/~/ ] Plan saved to disk (`{project}/.claude/plans/...`)
 - [x/~/ ] Devil's advocate (findings: N accepted, N dismissed, N deferred)
 - [x/~/ ] Verification strategy defined
+- [x/~/ ] TODO.md entry format prepared (type, scope, branch)
 ```
 
 Legend: `[x]` = done, `[~]` = partially done / skipped with justification, `[ ]` = not done.

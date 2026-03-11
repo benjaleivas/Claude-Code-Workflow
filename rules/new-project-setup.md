@@ -72,7 +72,7 @@ When setting up a new project, create:
 - `{project}/.claude/plans/` — for versioned plan artifacts
 - `{project}/.claude/session-logs/` — for compression-resistant reasoning history
 - `{project}/.claude/MEMORY.md` — with this header template (see below)
-- `{project}/docs/TODO.md` — cross-session task queue with this template:
+- `{project}/TODO.md` — cross-session task queue with this template:
 
 ```markdown
 # TODO

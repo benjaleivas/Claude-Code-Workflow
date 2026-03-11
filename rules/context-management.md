@@ -40,3 +40,26 @@ After compaction, conversation history is summarized. To recover context:
 4. **MEMORY.md**: Re-check for relevant [LEARN] entries
 
 The summary from compaction provides a high-level overview, but specific implementation details may be lost. Disk artifacts are the source of truth.
+
+## Proactive Context Persistence
+
+Don't wait for the pre-compact hook. Actively persist key state to disk as you work:
+
+1. **After major decisions**: When a design choice is made during implementation (not just planning), immediately append a 1-3 line entry to the session log. Decisions that live only in conversation WILL be lost.
+2. **After completing plan steps**: Note which steps are done in the session log. If compaction hits mid-implementation, this is the recovery map.
+3. **Before long tool outputs**: If you're about to receive a large result (test suite, build log, API response), consider whether you've persisted your current reasoning. Large outputs accelerate compaction.
+
+## Context Pressure Warning
+
+When you notice context is getting heavy (long session, many file reads, large tool outputs), proactively:
+
+1. **Warn the user**: "Context is getting heavy — I'm persisting key decisions to the session log."
+2. **Write state to disk**: Update the session log with current progress, decisions, and next steps.
+3. **Suggest WIP commit**: If code changes are in a working state, suggest committing partial progress before context compresses.
+4. **Trim unnecessary context**: Stop reading entire files when you only need specific sections. Switch to targeted reads with offset/limit.
+
+Indicators of heavy context:
+- Session has been active for 30+ back-and-forth exchanges
+- Multiple large files have been read in full
+- Build/test output has been captured verbatim
+- Multiple subagent results have been inlined

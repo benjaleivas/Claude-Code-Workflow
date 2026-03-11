@@ -16,6 +16,13 @@ Ensure work happens on a feature branch (see `branching-strategy.md`):
 
 Skip this step if the task is a quick fix (no plan mode, single-file change).
 
+### Step 0b: TRACK
+Add the task to `{project}/TODO.md` under the Active section:
+- Format: `- [ ] type(scope): Description — branch: {branch-name}`
+- Use the type/scope from the plan's branch name and the plan's one-line goal
+- If `TODO.md` doesn't exist, create it using the template from `new-project-setup.md`
+- Skip if the task is already listed (e.g., continuation session)
+
 ### Step 1: IMPLEMENT
 Execute plan steps. Work through the blueprint systematically. If the plan has a spec section, reference it continuously during implementation.
 
@@ -78,6 +85,7 @@ See `session-lifecycle.md` Phase 3 for the full action menu table and decision l
 - [x/~/ ] `/techdebt` suggested (if multi-file plan)
 - [x/~/ ] `/update-tracker` suggested (if 3+ files or 50+ lines)
 - [x/~/ ] Session log updated (if plan-mode task)
+- [x/~/ ] TODO.md updated (Active on approval, Done on merge)
 ```
 
 Legend: `[x]` = done, `[~]` = not applicable / skipped with justification, `[ ]` = not done.

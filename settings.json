@@ -50,6 +50,11 @@
             "type": "command",
             "command": "~/.claude/hooks/worktree-setup.sh",
             "timeout": 120000
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/clear_attention.sh",
+            "timeout": 3000
           }
         ]
       }
@@ -60,6 +65,11 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/prompt-validator.sh",
+            "timeout": 3000
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/clear_attention.sh",
             "timeout": 3000
           }
         ]
@@ -154,6 +164,11 @@
             "type": "command",
             "command": "~/.claude/hooks/notify.sh",
             "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/attention.sh",
+            "timeout": 3000
           }
         ]
       },
@@ -164,6 +179,11 @@
             "type": "command",
             "command": "~/.claude/hooks/notify.sh",
             "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/done.sh",
+            "timeout": 3000
           }
         ]
       }
