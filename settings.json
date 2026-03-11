@@ -78,7 +78,7 @@
           },
           {
             "type": "command",
-            "command": "~/.claude/hooks/clear_attention.sh",
+            "command": "~/.claude/hooks/working.sh",
             "timeout": 3000
           }
         ]
@@ -166,11 +166,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/notify.sh",
-            "timeout": 5000
-          },
-          {
-            "type": "command",
             "command": "~/.claude/hooks/attention.sh",
             "timeout": 3000
           }
@@ -179,11 +174,6 @@
       {
         "matcher": "idle_prompt",
         "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/notify.sh",
-            "timeout": 5000
-          },
           {
             "type": "command",
             "command": "~/.claude/hooks/done.sh",
