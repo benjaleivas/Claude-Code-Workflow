@@ -165,3 +165,4 @@ These files contain detailed patterns extracted from this document. They auto-lo
 - **New Project Setup** — `new-project-setup.md` — Project CLAUDE.md scaffolding + plans/, session-logs/, MEMORY.md directories.
 - **Context Management** — `context-management.md` — MCP context budget, context hygiene, pre-compaction checklist, recovery after compaction.
 - **Branching Strategy** — `branching-strategy.md` — Feature branch convention, orchestrator Step 0, quick fix exemption, cleanup.
+- **AskUserQuestion Convention** — `ask-user-questions.md` — Always recommend one option, explain trade-offs, justify the recommendation.
