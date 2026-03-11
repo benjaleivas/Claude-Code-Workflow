@@ -25,12 +25,18 @@ Append to the session log as you work. Every time:
 
 Write a 1-3 line entry immediately. This is the most important trigger: decisions that live only in conversation WILL be lost to compression.
 
-### 3. At Session End
+### 3. At Session End (MANDATORY — proactive, not prompted)
+Before finishing a session that involved plan-mode work, significant decisions, or debugging insights, Claude MUST write/append to the session log without asking. This is not optional and not hook-driven — it's part of Claude's normal wrap-up behavior.
+
 Add a final section with:
 - What was accomplished
+- Key decisions made and why
 - Open questions
 - Unresolved issues
 - Next steps for future sessions
+- Any [LEARN] entries created during the session
+
+**Trigger**: Claude should self-check before ending: "Did this session involve plan-mode work, design decisions, or debugging insights?" If yes, write the log entry silently as the last action before stopping. Do not ask the user for permission.
 
 ## Recovery
 If context is lost after compression, point Claude to the session log:

@@ -131,11 +131,6 @@
       {
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "A Claude Code session is stopping. Determine if a session log update is needed. Say YES only if: (1) plan-mode work was done, (2) significant design decisions were made, or (3) non-obvious debugging insights were discovered. Respond with {\"ok\": true} if no update needed, or {\"ok\": false, \"reason\": \"AUTO-UPDATE SESSION LOG: Write/append to the session log now before stopping. This session involved [brief description of what was done, key decisions, and any corrections]. Do NOT ask — just write the log entry silently and then stop.\"} if warranted.",
-            "timeout": 15000
-          },
-          {
             "type": "command",
             "command": "~/.claude/hooks/check-open-pr.sh",
             "timeout": 10000
