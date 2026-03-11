@@ -82,6 +82,13 @@ If a session starts on main but should be on a feature branch:
 - If a relevant branch exists, switch to it
 - If not, follow the normal branching flow
 
+### Multi-Session GitHub Coordination
+When resuming work across sessions:
+1. Check open PRs: `gh pr list --author @me --state open`
+2. Check PR status/checks: `gh pr checks <number>`
+3. Check for review comments: `gh pr view <number> --comments`
+4. If reviewer left feedback: address comments, push updates, re-request review
+
 If a session needs context from past work:
 - Run `git worktree list` to see all preserved worktrees
 - Browse `{worktree}/.claude/session-logs/` and `{worktree}/.claude/plans/` for reasoning and decisions
@@ -113,3 +120,11 @@ Worktrees persist after sessions end as reference-only archives. They are NOT de
 - **Purpose**: future sessions can browse plans, session logs, and code to recover context
 - **Pruning**: manual — run `git worktree list`, cross-reference with merged branches, remove stale ones with `git worktree remove {path}`
 - **Rule**: never reuse an old worktree for new work — always create a fresh one
+
+### Worktree Archival Strategy
+- **Preserved by default**: session logs, plans, and code remain accessible
+- **node_modules cleanup**: safe to delete from archived worktrees — recoverable via `npm install`. The `/worktrees` command offers this.
+- **Pruning cadence**: `/techdebt` checks for merged-branch worktrees every session
+- **On-demand management**: `/worktrees` for listing, browsing, and cleanup
+- **Cross-worktree context**: browse `{worktree}/.claude/plans/` and `{worktree}/.claude/session-logs/` to recover reasoning from past work
+- **Storage rule**: code and reasoning are cheap to keep. node_modules are expensive and recoverable. Prune dependencies, preserve decisions.

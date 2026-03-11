@@ -125,6 +125,7 @@ After the PR is merged and closed:
    - Suggest `/update-tracker` if significant work (3+ files or 50+ lines).
    - Suggest `/techdebt` for a final sweep.
    - Update session log (if plan-mode task).
+   - If this session involved user corrections ("no, that's wrong"), verify [LEARN] entries were created. If any missed, create them now before closing.
    - Update `TODO.md` on main: add completed task to Done (`- [x] type(scope): Description — PR #N`), add any newly discovered tasks to Next Up. If the task wasn't previously in Active (because TODO.md is not edited on feature branches), add it directly to Done.
 6. **Close**: Tell the user: "Branch cleaned up. Start a new session for your next task." If a worktree was used, add: "Worktree preserved at `{path}` for future reference."
 

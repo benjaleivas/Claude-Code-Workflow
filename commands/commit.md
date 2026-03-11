@@ -13,6 +13,7 @@ Commit the current changes with a clear message.
    - Trivial changes on main (1 file, <20 lines) proceed without warning.
 4. Run `git log --oneline -5` to see recent commit message style
 5. Stage the appropriate files with `git add` — prefer specific files over `git add -A` to avoid accidentally staging secrets or binaries
+5b. If any staged files match security-sensitive patterns (`auth/`, `security/`, `middleware/`, `*migration*`, `*policy*`, `RLS`, `.env*`) and no security review has been run this session (check `.claude/.session-state` for `last_security_review`), suggest: "These changes touch security-sensitive code. Consider running the security-reviewer agent before committing."
 6. Write a commit message that:
    - Starts with a verb (add, fix, update, remove, refactor)
    - Focuses on WHY not WHAT

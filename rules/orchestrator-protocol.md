@@ -51,6 +51,16 @@ Run `/simplify` on all changed files. This step is **MANDATORY** for every imple
 
 This step is the bridge between "code that works" and "code that's clean." It runs before review so the reviewer sees the best version of the code.
 
+### Step 2d: SECURITY GATE (conditional)
+Triggers when changes touch ANY of: `auth/`, `security/`, RLS policies, migration files, API route handlers, user input handling, `package.json`/`requirements.txt` (dependency changes).
+
+1. Spawn `security-reviewer` agent on changed files
+2. If CRITICAL findings: must fix before proceeding to Step 3
+3. If HIGH findings: warn user, allow acknowledgement to proceed
+4. If MEDIUM/LOW only: log findings, continue
+
+Skip if: changes are purely UI/styling, documentation, or test files with no auth/data concerns.
+
 ### Step 3: REVIEW
 In Desktop: suggest the built-in diff view + **Review code** button for inline feedback. In CLI: suggest `/review` for uncommitted changes. For complex work (3+ files, architectural changes, security-sensitive code), suggest `/grill` instead. For automated fix iteration (critic finds issues, you fix, critic re-audits), suggest `/qa`.
 
@@ -99,6 +109,8 @@ See `session-lifecycle.md` Phase 3 for the full action menu table and decision l
 - [x/~/ ] `/commit` suggested or completed
 - [x/~/ ] `/techdebt` suggested (if multi-file plan)
 - [x/~/ ] `/update-tracker` suggested (if 3+ files or 50+ lines)
+- [x/~/ ] Security gate passed (or N/A — no auth/data/dependency changes)
+- [x/~/ ] [LEARN] entries created for corrections discovered during implementation
 - [x/~/ ] Session log updated (if plan-mode task)
 - [x/~/ ] TODO.md updated on main (Done entry after merge)
 ```

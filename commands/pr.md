@@ -105,6 +105,12 @@ glab mr view --output json 2>/dev/null | python3 -c "import sys,json; d=json.loa
 
 - **CLOSED** (not merged): Ask if that was intentional.
 
+### Review Comment Handling
+After creating or checking on a PR:
+- Check for review comments: `gh pr view --comments`
+- If reviewer left feedback: summarize the feedback, suggest fixes
+- After addressing comments: `gh pr review --comment -b "Addressed feedback: [summary]"`
+
 ### Constraints
 - Only check once per session. Don't repeatedly ask.
 - If context was compressed and you've lost track of the PR, skip — the Stop hook will catch it.

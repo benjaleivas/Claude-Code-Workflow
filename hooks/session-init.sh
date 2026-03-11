@@ -20,6 +20,14 @@ CONTEXT=""
 [ -d ".claude/session-logs" ] && CONTEXT="${CONTEXT}Session logs directory exists.\n"
 [ -d ".claude/agents" ] && CONTEXT="${CONTEXT}Project-level agents available.\n"
 
+# Check MEMORY.md age for learning cadence
+if [ -f ".claude/MEMORY.md" ]; then
+  MEMORY_AGE_DAYS=$(( ($(date +%s) - $(stat -f %m ".claude/MEMORY.md")) / 86400 ))
+  if [ "$MEMORY_AGE_DAYS" -gt 30 ]; then
+    CONTEXT="${CONTEXT}MEMORY.md last updated ${MEMORY_AGE_DAYS} days ago — consider running /evolve to extract recent learnings.\n"
+  fi
+fi
+
 # Output context (if any detected)
 if [ -n "$CONTEXT" ]; then
   printf "%b" "$CONTEXT"

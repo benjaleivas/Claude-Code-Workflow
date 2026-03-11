@@ -31,6 +31,26 @@ Examples:
 ## Relationship to Auto Memory
 Claude Code also maintains automatic notes at `~/.claude/projects/<project>/memory/MEMORY.md`. Auto memory captures patterns Claude notices on its own. [LEARN] tags capture explicit corrections from the user. Both coexist — auto memory is passive observation, [LEARN] tags are active corrections.
 
+## Cadence Enforcement
+
+### Per-Session (automatic)
+- After any user correction, immediately create a [LEARN] entry — this is proactive, not advisory
+- At session end (Phase 5 cleanup): verify [LEARN] entries were created for all corrections. If any missed, create them now.
+
+### Weekly (suggested)
+- If significant work occurred (20+ commits in 7 days) and `/evolve` hasn't been run recently, suggest it
+- `/evolve` extracts patterns from git history and proposes new [LEARN] entries
+
+### Monthly (mandatory)
+- `/revise-claude-md` is mandatory monthly maintenance
+- Session-init hook checks MEMORY.md last-modified date. If >30 days, output a reminder
+- Cleans stale entries, merges duplicates, identifies promotion candidates
+
+### Cross-Project Promotion
+- `/revise-claude-md` identifies entries appearing across multiple projects
+- Promotion candidates go to `~/.claude/rules/` as permanent rules
+- Promotion is manual (user confirms) but actively surfaced
+
 ## Maintenance
 - Periodic cleanup via `/revise-claude-md`
 - Remove entries that are no longer relevant (e.g., after a library upgrade)

@@ -10,7 +10,7 @@ FILE_PATH=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin);
 echo "$FILE_PATH" | grep -qE '(test|fixture|mock|__tests__|\.test\.|\.spec\.|\.lock|lock\.)' && exit 0
 
 # Scan for common secret patterns
-SECRETS=$(grep -nE '(AKIA[0-9A-Z]{16}|sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}|xox[bsrap]-[0-9a-zA-Z\-]+|eyJ[a-zA-Z0-9_-]{20,}\.eyJ|glpat-[a-zA-Z0-9\-]{20,})' "$FILE_PATH" 2>/dev/null)
+SECRETS=$(grep -nE '(AKIA[0-9A-Z]{16}|sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}|xox[bsrap]-[0-9a-zA-Z\-]+|eyJ[a-zA-Z0-9_-]{20,}\.eyJ|glpat-[a-zA-Z0-9\-]{20,}|sk_live_[a-zA-Z0-9]{10,}|rk_live_[a-zA-Z0-9]{10,}|whsec_[a-zA-Z0-9]{10,}|sk-ant-[a-zA-Z0-9_\-]{10,}|sbp_[a-zA-Z0-9]{10,}|supabase.*service.role|SUPABASE_SERVICE_ROLE_KEY\s*=)' "$FILE_PATH" 2>/dev/null)
 
 if [ -n "$SECRETS" ]; then
   echo "WARNING: Possible secrets detected in $FILE_PATH"

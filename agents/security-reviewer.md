@@ -136,6 +136,35 @@ grep -rE "(AKIA[0-9A-Z]{16}|sk-[a-zA-Z0-9]{48}|ghp_[a-zA-Z0-9]{36})" .
 - Control verified and working correctly
 ```
 
+## Dependency Vulnerability Scanning
+
+### 6. Dependency Vulnerabilities
+- Node: `npm audit --json 2>/dev/null | jq '.vulnerabilities | to_entries[] | select(.value.severity == "critical" or .value.severity == "high")'`
+- Python: `pip audit --format json 2>/dev/null` (if pip-audit installed)
+- Flag critical/high vulnerabilities
+- Check lockfile consistency: if package.json changed but lock file didn't (or vice versa), flag
+
+### 7. Supply Chain
+- [ ] Lockfile exists and is committed
+- [ ] Dependencies use exact versions or narrow ranges (no `*` or `>=`)
+- [ ] No postinstall scripts in new dependencies (check with `npm explain <pkg>`)
+
+### 8. HTTP Security Headers (web projects)
+- [ ] Strict-Transport-Security set
+- [ ] X-Content-Type-Options: nosniff
+- [ ] X-Frame-Options: DENY (or CSP frame-ancestors)
+- [ ] Content-Security-Policy defined (at least script-src)
+- [ ] Referrer-Policy: strict-origin-when-cross-origin
+
+## Incident Response: If a Secret is Found in Committed Code
+
+1. **ROTATE the secret immediately** — assume compromised
+2. Check git history: `git log --all -p -S '<secret-pattern>' -- . ':!*.test.*'`
+3. If NOT yet pushed: `git filter-repo` or `git rebase -i` to remove
+4. If ALREADY pushed: secret is compromised, rotate is the only fix
+5. Add the pattern to .gitignore or pre-commit hooks
+6. Write a `[LEARN:security]` entry documenting the incident
+
 ## Before Starting
 
 Check the project's `.claude/MEMORY.md` for `[LEARN:security]`, `[LEARN:supabase]`, or `[LEARN:auth]` entries. Previous security findings may reveal recurring patterns.

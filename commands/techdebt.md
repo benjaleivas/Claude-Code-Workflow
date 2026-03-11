@@ -27,4 +27,11 @@ End-of-session codebase cleanup. Find and kill duplicated and dead code.
    - If the branch doesn't exist and no open PR references it (`gh pr list --head {branch-name}`): flag as stale
    - Present stale entries to user: "These TODO items have no active branch or PR. Remove them?"
 
+9. **Worktree Audit**: Run `git worktree list`
+   - For each non-main worktree: check if branch merged (`git branch --merged main | grep <branch>`)
+   - If merged AND last commit >14 days ago: suggest pruning
+   - If NOT merged but last commit >30 days: flag as potentially stale
+   - Report total disk usage of worktrees
+   - Offer to clean node_modules from archived worktrees (saves disk without losing code/logs)
+
 Focus on the files touched in this session first, then scan broadly if time permits.
