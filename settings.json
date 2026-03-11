@@ -3,26 +3,35 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "statusLine": {
-    "type": "command",
-    "command": "input=$(cat); dir=$(echo \"$input\" | jq -r '.workspace.current_dir | sub(\"/Users/[^/]+\"; \"~\")'); model=$(echo \"$input\" | jq -r '.model.display_name'); branch=$(git -C \"$(echo \"$input\" | jq -r '.workspace.current_dir')\" branch --show-current 2>/dev/null || echo '-'); printf \"\\033[2m%s [%s] (%s)\\033[0m\" \"$dir\" \"$model\" \"$branch\""
-  },
-  "enabledPlugins": {
-    "code-simplifier@claude-plugins-official": true,
-    "code-review@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": true,
-    "agent-sdk-dev@claude-plugins-official": true,
-    "explanatory-output-style@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": true,
-    "learning-output-style@claude-plugins-official": true,
-    "Notion@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
-    "vercel@claude-plugins-official": true,
-    "supabase@claude-plugins-official": true
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev*)",
+      "Bash(npm run build*)",
+      "Bash(npm run test*)",
+      "Bash(npm run lint*)",
+      "Bash(npm run check*)",
+      "Bash(npm run start*)",
+      "Bash(npx tsc *)",
+      "Bash(npx expo start*)",
+      "Bash(npx expo doctor*)",
+      "Bash(npx expo config*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git branch*)",
+      "Bash(git stash list*)",
+      "Bash(git stash show*)",
+      "Bash(git stash push*)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr status*)",
+      "Bash(gh pr checks*)",
+      "Bash(gh issue list*)",
+      "Bash(gh issue view*)",
+      "Bash(gh issue status*)",
+      "Bash(gh run list*)",
+      "Bash(gh run view*)"
+    ]
   },
   "hooks": {
     "PreCompact": [
@@ -183,5 +192,27 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); eval \"$(echo \"$input\" | jq -r '@sh \"dir=\\(.workspace.current_dir | sub(\"/Users/[^/]+\"; \"~\"))\", @sh \"model=\\(.model.display_name)\", @sh \"cwd=\\(.workspace.current_dir)\", @sh \"cost=\\(.cost.total_cost_usd // 0)\", @sh \"ctx=\\(.context_window.used_percentage // 0)\"')\"; branch=$(git -C \"$cwd\" branch --show-current 2>/dev/null || echo '-'); printf \"\\033[2m%s [%s] (%s) $%.2f ctx:%s%%\\033[0m\" \"$dir\" \"$model\" \"$branch\" \"$cost\" \"$ctx\""
+  },
+  "enabledPlugins": {
+    "code-simplifier@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "agent-sdk-dev@claude-plugins-official": true,
+    "explanatory-output-style@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": true,
+    "Notion@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "vercel@claude-plugins-official": true,
+    "supabase@claude-plugins-official": true
+  },
+  "voiceEnabled": false
 }

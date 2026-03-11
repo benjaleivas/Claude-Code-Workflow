@@ -61,6 +61,18 @@ Triggers when changes touch ANY of: `auth/`, `security/`, RLS policies, migratio
 
 Skip if: changes are purely UI/styling, documentation, or test files with no auth/data concerns.
 
+### Step 2e: TEST COVERAGE NUDGE (conditional)
+After implementation, check if new public functions, exported APIs, or route handlers were added without corresponding tests.
+
+1. Compare `git diff --diff-filter=A --name-only` (newly added files only) against test file patterns (`*.test.*`, `*.spec.*`, `__tests__/`)
+2. If new source files were added but no test files: suggest spawning `test-writer` agent
+3. If new exports were added to existing files but no test changes: note it as a suggestion (not a blocker)
+
+This is advisory, not mandatory. The user can decline. Skip if:
+- Changes are purely config, docs, or styling
+- The project has no existing test infrastructure
+- The user explicitly stated no tests needed
+
 ### Step 3: REVIEW
 In Desktop: suggest the built-in diff view + **Review code** button for inline feedback. In CLI: suggest `/review` for uncommitted changes. For complex work (3+ files, architectural changes, security-sensitive code), suggest `/grill` instead. For automated fix iteration (critic finds issues, you fix, critic re-audits), suggest `/qa`.
 
