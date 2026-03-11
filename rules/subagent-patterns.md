@@ -85,6 +85,45 @@ Patterns:
 - **Delegate mode**: press Shift+Tab so the lead only coordinates, never implements
 - **Plan approval**: require teammates to plan before implementing for risky tasks
 
+## Command & Agent Decision Tree
+
+When multiple tools could handle a task, use this routing table:
+
+### Code Review
+| Situation | Route | Why |
+|-----------|-------|-----|
+| Quick check before commit (any size) | `/review` | 30s inline, catches obvious issues |
+| 3+ files or architectural/security changes | `/grill` | Adversarial depth, catches subtle issues |
+| Want automated fix iteration (critic finds, you fix, repeat) | `/qa` | Multi-round loop, max 3 rounds |
+| Deep async review without fixing | spawn `code-reviewer` agent | Thorough analysis returned as report |
+
+### Security
+| Situation | Route | Why |
+|-----------|-------|-----|
+| Auth, RLS, input handling, secrets changes | spawn `security-reviewer` agent | OWASP Top 10 checklist |
+| Security + automated fixing | `/qa security` | Uses security-reviewer as critic in fix loop |
+
+### Testing
+| Situation | Route | Why |
+|-----------|-------|-----|
+| Run tests and fix a few failures | `/test-and-fix` | Interactive, you see each fix |
+| Many failures or autonomous iteration needed | `/ralph-loop` (default test mode) | Up to 10 autonomous rounds |
+| Generate new tests for a module | spawn `test-writer` agent | Covers happy path, edge cases, errors |
+
+### Architecture
+| Situation | Route | Why |
+|-----------|-------|-----|
+| Design question during plan mode | architect thinking (Phase 1 brainstorm) | Built into planning flow |
+| Design question outside plan mode | spawn `architect` agent | Returns ADR, read-only |
+| Multiple viable approaches, high stakes | Phase 2.5 (competing architectures) | 2-3 parallel plans |
+
+### Refactoring & Cleanup
+| Situation | Route | Why |
+|-----------|-------|-----|
+| Just finished writing code | `/simplify` (auto in orchestrator) | Cleans current changeset |
+| End of session or multi-file plan | `/techdebt` | Codebase-wide: dead code, merged branches, TODOs |
+| Targeted refactor with verification | `/ralph-loop --mode refactor` | Autonomous iteration against a target |
+
 ## Model Selection
 
 When spawning subagents via the Agent tool, choose the `model` parameter based on what the agent needs to do. This is advisory — use judgment, but these defaults save cost without sacrificing quality.

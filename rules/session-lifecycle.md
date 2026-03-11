@@ -36,6 +36,16 @@ Quick fix workflow:
 ```
 No worktree, no plan mode, no branching. Proceed directly to implementation.
 
+### Quick Fix Guardrail
+After classifying as quick fix, verify BOTH conditions are true:
+1. **Single file**: The change touches exactly one file (not "mostly one file" or "one file plus a test")
+2. **Under 20 lines**: The total diff will be under 20 lines of actual code changes
+
+If either condition is uncertain, escalate to non-trivial workflow. When in doubt, plan.
+
+Additionally: if a "quick fix" grows beyond 20 lines or touches a second file during implementation, STOP and suggest switching to plan mode. Present via AskUserQuestion:
+- "This grew beyond quick fix scope (N files, ~N lines). Switch to plan mode?"
+
 ### Skip Entirely When:
 - Follow-up messages in an ongoing session
 - Continuation sessions (context summaries indicate prior work)
@@ -115,7 +125,7 @@ After the PR is merged and closed:
    - Suggest `/update-tracker` if significant work (3+ files or 50+ lines).
    - Suggest `/techdebt` for a final sweep.
    - Update session log (if plan-mode task).
-   - Update `TODO.md`: move completed task to Done section (`- [x] type(scope): Description — PR #N`), add any newly discovered tasks to Next Up.
+   - Update `TODO.md` on main: add completed task to Done (`- [x] type(scope): Description — PR #N`), add any newly discovered tasks to Next Up. If the task wasn't previously in Active (because TODO.md is not edited on feature branches), add it directly to Done.
 6. **Close**: Tell the user: "Branch cleaned up. Start a new session for your next task." If a worktree was used, add: "Worktree preserved at `{path}` for future reference."
 
 ---

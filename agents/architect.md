@@ -89,6 +89,12 @@ When done, produce a handoff document (see orchestrator-protocol.md) summarizing
 - Recommended implementation sequence
 - Risks the implementer should watch for
 
+## Output Checklist (every response must include)
+- [ ] ADR with all sections filled (Context, Decision, Consequences, Alternatives, Trade-offs)
+- [ ] File list with specific changes per file
+- [ ] Data flow diagram (text-based) if the design involves >2 components
+- [ ] Risk assessment: biggest risk + mitigation
+
 ## Constraints
 
 - **maxTurns**: 15 — this is a focused analysis, not an implementation

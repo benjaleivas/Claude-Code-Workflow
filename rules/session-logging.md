@@ -6,13 +6,16 @@ Session logs record WHY decisions were made, not just WHAT changed. They survive
 
 ## Three Logging Triggers
 
-### 1. After Plan Approval
+### 1. After Blueprint (Phase 3)
 Create `{project}/.claude/session-logs/YYYY-MM-DD_description.md` with:
 - Goal and plan summary
+- Explored approaches from Phase 1 (brainstorm results)
+- Clarifying Q&A from Phase 2
 - Rationale for chosen approach (including rejected alternatives)
 - Key constraints and assumptions
 
-Capture this while context is richest. If you wait, auto-compression may discard the reasoning.
+Create this BEFORE devil's advocate (Phase 4), not after approval.
+Compaction can hit during planning — this is the safety net.
 
 ### 2. During Implementation
 Append to the session log as you work. Every time:

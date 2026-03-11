@@ -63,3 +63,23 @@ Indicators of heavy context:
 - Multiple large files have been read in full
 - Build/test output has been captured verbatim
 - Multiple subagent results have been inlined
+
+## Session State Tracking
+
+Hooks and commands share state via `{project}/.claude/.session-state`. This is a simple key=value file (not JSON — parseable by bash hooks and Claude alike).
+
+Format:
+```
+last_verify=2026-03-10T17:30:00
+last_simplify=2026-03-10T17:25:00
+last_review=2026-03-10T17:20:00
+last_grill=
+edit_count=5
+branch=feature/dark-mode
+```
+
+**Writers**: `suggest-verify.sh` (edit_count, last_verify), `/simplify` (last_simplify), `/review` (last_review), `/grill` (last_grill), orchestrator Step 0 (branch).
+
+**Readers**: `warn-commit.sh` (checks last_verify), `warn-pr.sh` (checks last_grill), Execution Checklist (reads all).
+
+**Lifecycle**: Created at session start, deleted by `session-cleanup.sh` at session end. Lives in `.claude/` (gitignored).

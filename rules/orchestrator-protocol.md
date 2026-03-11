@@ -16,12 +16,14 @@ Ensure work happens on a feature branch (see `branching-strategy.md`):
 
 Skip this step if the task is a quick fix (no plan mode, single-file change).
 
-### Step 0b: TRACK
-Add the task to `{project}/TODO.md` under the Active section:
-- Format: `- [ ] type(scope): Description — branch: {branch-name}`
-- Use the type/scope from the plan's branch name and the plan's one-line goal
-- If `TODO.md` doesn't exist, create it using the template from `new-project-setup.md`
-- Skip if the task is already listed (e.g., continuation session)
+### Step 0b: TRACK (deferred to cleanup)
+Do NOT edit TODO.md on feature branches — it causes merge conflicts with parallel worktree sessions.
+Instead, note the task metadata for later:
+- Type/scope from the plan's branch name
+- One-line goal from the plan
+- Branch name
+
+TODO.md is updated on main during Phase 5 cleanup (after PR merge). See `session-lifecycle.md`.
 
 ### Step 1: IMPLEMENT
 Execute plan steps. Work through the blueprint systematically. If the plan has a spec section, reference it continuously during implementation.
@@ -58,6 +60,19 @@ Address issues found in review. Prioritize: critical > major > minor. Don't fix 
 ### Step 5: RE-VERIFY
 Run verification again after fixes. If it fails, loop back to Step 4.
 
+### Mid-Implementation Replan
+
+If implementation reveals the plan is fundamentally wrong (not just a minor fix):
+
+1. **Stop implementation**. Don't continue on a broken plan.
+2. **Preserve current plan**: Rename to `{plan-file}_v1.md` on disk.
+3. **Assess severity**:
+   - **Minor adjustment** (data shape wrong, missed edge case): Revise Phase 3 blueprint, re-run Phase 4 devil's advocate, re-propose.
+   - **Major rethink** (wrong approach entirely): Restart from Phase 1 (Structured Thinking) with the new information.
+4. **Carry forward**: Reference what was learned from v1 in the new plan. Don't re-discover the same dead ends.
+5. **Session log**: Append a "Replan" entry explaining what went wrong and why.
+6. **WIP commit**: If partial work is salvageable, commit with `WIP:` prefix before replanning.
+
 ### Step 6: SATISFACTION CHECK & NEXT ACTIONS
 Handled by `session-lifecycle.md` Phase 3. In summary:
 
@@ -85,7 +100,7 @@ See `session-lifecycle.md` Phase 3 for the full action menu table and decision l
 - [x/~/ ] `/techdebt` suggested (if multi-file plan)
 - [x/~/ ] `/update-tracker` suggested (if 3+ files or 50+ lines)
 - [x/~/ ] Session log updated (if plan-mode task)
-- [x/~/ ] TODO.md updated (Active on approval, Done on merge)
+- [x/~/ ] TODO.md updated on main (Done entry after merge)
 ```
 
 Legend: `[x]` = done, `[~]` = not applicable / skipped with justification, `[ ]` = not done.

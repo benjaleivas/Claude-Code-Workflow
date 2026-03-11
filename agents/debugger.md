@@ -143,6 +143,12 @@ For each debugging session, provide:
 [What would prevent similar issues — e.g., add a type guard, mock fixture, or [LEARN] entry]
 ```
 
+## When NOT to Use
+- Code quality issues without a specific bug → use `code-reviewer` agent
+- Architecture questions → use `architect` agent
+- Refactoring decisions → use `/simplify` or `/techdebt`
+- Test generation → use `test-writer` agent
+
 ## Before Starting
 
 Check the project's `.claude/MEMORY.md` for `[LEARN]` entries related to this error domain. Previous corrections may point directly to the root cause.

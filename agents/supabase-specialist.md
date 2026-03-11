@@ -207,3 +207,10 @@ const supabaseAdmin = createClient(
 ```
 
 **NEVER expose the service role key to client code.**
+
+## Structured Output
+When making database changes, output:
+1. Migration file(s) in `supabase/migrations/`
+2. RLS policies (create or update)
+3. TypeScript types (if `generate_typescript_types` is available)
+4. Test queries validating the changes work with anon key

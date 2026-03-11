@@ -142,6 +142,13 @@ Deno.test("handles errors", async () => {
 });
 ```
 
+## Output Requirements
+
+- Tests must cover: happy path, edge cases (empty/null/boundary), error paths
+- Target: all critical paths tested (don't enforce arbitrary coverage %)
+- Output: test files in the project's test directory following existing naming conventions
+- Each test must have a descriptive name explaining WHAT it tests, not HOW
+
 ## Principles
 
 1. **Test behavior, not implementation** — tests should survive refactoring

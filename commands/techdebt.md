@@ -4,6 +4,8 @@ description: End-of-session codebase cleanup. Use at the end of a session or aft
 
 End-of-session codebase cleanup. Find and kill duplicated and dead code.
 
+**Relationship to /simplify**: `/simplify` runs on the CURRENT changeset (files you just modified) as part of the orchestrator loop. `/techdebt` runs on the ENTIRE codebase looking for cross-file patterns, stale branches, dead code, and historical duplication that `/simplify` can't see. Always assume `/simplify` has already run on recent changes.
+
 1. Scan the codebase for:
    - **Duplicated code**: 3+ similar lines appearing in multiple places that could be extracted
    - **Dead code**: unused exports, functions, variables, and types
@@ -20,5 +22,9 @@ End-of-session codebase cleanup. Find and kill duplicated and dead code.
 7. Check for stale branches: `git branch --merged main | grep -v main`
    - If merged branches exist, list them and offer to delete: `git branch -d <branch>`
    - Skip if on a feature branch that hasn't been merged yet
+8. **TODO.md Audit**: Check for stale Active entries:
+   - For each `- [ ]` entry in Active, check if the branch still exists: `git branch --list {branch-name}`
+   - If the branch doesn't exist and no open PR references it (`gh pr list --head {branch-name}`): flag as stale
+   - Present stale entries to user: "These TODO items have no active branch or PR. Remove them?"
 
 Focus on the files touched in this session first, then scan broadly if time permits.

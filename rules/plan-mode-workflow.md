@@ -5,13 +5,27 @@ For EVERY non-trivial plan, follow this mandatory workflow:
 ## Phase 1: Structured Thinking
 Use XML tags (`<brainstorm>`, `<analysis>`, `<decision>`) to explore the problem space before designing anything. The `<brainstorm>` tag MUST list 2-3 named approaches with trade-offs — see `~/.claude/rules/structured-thinking.md` for tag definitions. If the task was flagged for "competing architectures," these named approaches become the assignments for parallel agents in Phase 2.5.
 
-## Phase 2: Clarifying Questions
-Use AskUserQuestion to resolve ambiguities BEFORE designing:
-- Scope boundaries and edge cases
-- Priorities and constraints
-- Implementation preferences
+## Phase 2: Clarifying Questions (MANDATORY)
 
-Skip ONLY if user provided exhaustive specs (document why in the plan).
+Claude MUST ask at least one round of clarifying questions via AskUserQuestion. This phase cannot be self-skipped.
+
+1. Draft 2-4 questions covering:
+   - Scope boundaries and edge cases
+   - Priorities and constraints
+   - Implementation preferences
+   - Acceptance criteria
+
+2. Present via AskUserQuestion (mandatory — not optional).
+
+3. After receiving answers, evaluate: "Are there remaining ambiguities that could lead to rework?"
+   - If yes: ask another round of questions.
+   - If no: ask user to confirm scope is clear (via AskUserQuestion with a "Scope is clear, proceed to blueprint" option).
+
+4. User confirms → proceed to Phase 3.
+
+**Exit condition**: User explicitly confirms scope is clear. Not Claude's judgment alone.
+
+**Planning Checklist enforcement**: If no AskUserQuestion was called during Phase 2, the checklist item MUST be `[ ]` (not done), which blocks the plan from being proposed.
 
 ## Phase 2.5: Architecture Competition (only when flagged as ambiguous)
 
@@ -95,21 +109,37 @@ Use ADR format when the `<decision>` tag from Phase 1 involves significant archi
 
 **Save to disk**: Write the plan to `{project}/.claude/plans/YYYY-MM-DD_description.md`. This makes it recoverable after compression and across sessions.
 
-## Phase 4: Devil's Advocate
-ALWAYS run `/devils-advocate` (or invoke the pattern via subagent) before finalizing the plan. Address all findings:
-- **ACCEPTED**: update plan with mitigation
-- **DISMISSED**: provide specific evidence why it doesn't apply
-- **DEFERRED**: track for future work
+**Create session log now**: After saving the plan, immediately create the session log (`{project}/.claude/session-logs/YYYY-MM-DD_description.md`) with brainstorm results, clarifying Q&A, and rationale. This MUST happen before Phase 4 — compaction can hit during planning. See `session-logging.md` Trigger 1.
+
+## Phase 4: Devil's Advocate (AUTO-RUN, before user sees plan)
+ALWAYS run `/devils-advocate` (or invoke the pattern via subagent) BEFORE presenting the plan to the user. The user should never see a plan that hasn't been stress-tested.
+
+Address all findings:
+- **ACCEPTED**: update the blueprint with mitigation. Mark what changed.
+- **DISMISSED**: provide specific evidence why it doesn't apply.
+- **DEFERRED**: track for future work.
+
+The findings become a mandatory section in the Phase 5 output (see below).
 
 ## Phase 5: Propose
-Present the plan only after phases 1-4 are complete. After user approval, the orchestrator protocol activates automatically (see `~/.claude/rules/orchestrator-protocol.md`).
+Present the plan only after phases 1-4 are complete. The plan output MUST include:
+
+1. The blueprint (from Phase 3, revised per Phase 4 findings)
+2. A **Devil's Advocate Findings** section showing:
+   - What was challenged
+   - What was ACCEPTED (and how the plan changed)
+   - What was DISMISSED (and why)
+   - What was DEFERRED (and where it's tracked)
+3. The Planning Checklist
+
+After user approval, the orchestrator protocol activates automatically (see `~/.claude/rules/orchestrator-protocol.md`).
 
 **MANDATORY**: Every plan output must end with the **Planning Checklist** below. After implementation, the orchestrator report must include the **Execution Checklist**.
 
 ```
 ### Planning Checklist
 - [x/~/ ] Structured thinking (`<brainstorm>`, `<analysis>`, `<decision>`)
-- [x/~/ ] Clarifying questions (or documented why skipped)
+- [x/~/ ] Clarifying questions (MANDATORY — AskUserQuestion called, user confirmed scope)
 - [x/~/ ] Spec section (data shapes, contracts, edge cases, success criteria)
 - [x/~/ ] Plan saved to disk (`{project}/.claude/plans/...`)
 - [x/~/ ] Devil's advocate (findings: N accepted, N dismissed, N deferred)

@@ -14,9 +14,11 @@ echo "$COMMAND" | grep -q 'gh pr create' || exit 0
 CHANGED_FILES=$(git diff --name-only main...HEAD 2>/dev/null | wc -l | tr -d ' ')
 
 if [ "$CHANGED_FILES" -ge 3 ]; then
-  # Check if /grill has been run (tracked via timestamp file)
-  GRILL_FILE="${HOME}/.claude/.last-grill"
-  if [ ! -f "$GRILL_FILE" ]; then
+  # Check if /grill has been run (tracked via session state)
+  PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")
+  STATE_FILE="${PROJECT_ROOT}/.claude/.session-state"
+  LAST_GRILL=$(grep '^last_grill=' "$STATE_FILE" 2>/dev/null | cut -d= -f2)
+  if [ -z "$LAST_GRILL" ]; then
     echo "Warning: ${CHANGED_FILES} files changed but /grill hasn't been run. Consider running /grill before creating a PR."
   fi
 fi

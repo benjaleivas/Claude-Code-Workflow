@@ -240,3 +240,10 @@ OTA updates only work for JS/TS changes. Native code changes require a new build
 | Fonts not loading | Ensure `useFonts` hook is in root layout, show splash until loaded |
 | Keyboard covers input | Use `KeyboardAvoidingView` with `behavior={Platform.OS === 'ios' ? 'padding' : 'height'}` |
 | Status bar overlap | Use `SafeAreaView` from `react-native-safe-area-context` |
+
+## Structured Output
+When making changes, output:
+1. Files modified/created with platform annotations (iOS/Android/both)
+2. New dependencies added (with `npx expo install` commands)
+3. Native config changes (app.json/app.config.ts)
+4. EAS build impact (if any config changes affect builds)
