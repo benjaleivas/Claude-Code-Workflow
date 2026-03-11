@@ -14,6 +14,8 @@ These transversal agents are always available via `~/.claude/agents/`. They have
 | `expo-specialist` | user | All | React Native/Expo mobile development |
 | `architect` | — | Read, Grep, Glob, Bash (read-only) | System design, major refactor, technology selection |
 
+Project-level agents (Polis `.claude/agents/`) include `vercel-specialist` for production deployment diagnostics — see the project CLAUDE.md for the full agent roster.
+
 These supplement (not replace) the ad-hoc subagent patterns below.
 
 ---

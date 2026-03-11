@@ -110,6 +110,7 @@ After the user chooses to ship:
    - Desktop: suggest enabling **auto-fix** and **auto-merge** from the CI status bar.
    - CLI: suggest monitoring CI manually or using `/fix-ci` if checks fail.
 5. Wait for PR to merge (user confirms or Claude detects via `gh pr status`).
+6. **Production verification** (web changes only): After merge, spawn `vercel-specialist` to confirm the new deployment is `● Ready` and the affected pages render correctly. Use `vercel ls` and `WebFetch` on the production URL.
 
 ---
 

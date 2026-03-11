@@ -53,6 +53,7 @@ I have transversal slash commands in `~/.claude/commands/`. **Do not wait for me
 - If stuck in a test-fix cycle: suggest `/ralph-loop` for autonomous iteration
 - If ralph-loop should stop early: suggest `/cancel-ralph`
 - If CI is failing: suggest `/fix-ci` to fetch logs, diagnose, and fix
+- If production site is down, returning errors, or not rendering: spawn `vercel-specialist` agent to diagnose (deployment status, runtime logs, CDN cache headers)
 - When user pastes a bug report, error log, or Slack thread: don't ask clarifying questions — read the context, find root cause, fix it. Minimize back-and-forth.
 
 ### End of Session
