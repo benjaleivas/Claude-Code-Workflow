@@ -16,6 +16,16 @@ Ensure work happens on a feature branch (see `branching-strategy.md`):
 
 Skip this step if the task is a quick fix (no plan mode, single-file change).
 
+### Step 0a: RENAME WORKTREE
+If working in a worktree (detected in Step 0), rename it to match the plan:
+1. Derive a descriptive name from the plan's branch name or description (e.g., `feature/dark-mode-toggle` → `dark-mode-toggle`)
+2. Compute the new path: replace the last path segment of the current worktree path
+3. Run: `git worktree move "$(pwd)" "<new-path>"`
+4. `cd` into the new path (the old path is no longer valid)
+5. Confirm with `git worktree list` and `pwd`
+
+Skip if: not in a worktree, or the worktree name already matches the plan.
+
 ### Step 0b: TRACK (deferred to cleanup)
 Do NOT edit TODO.md on feature branches — it causes merge conflicts with parallel worktree sessions.
 Instead, note the task metadata for later:
