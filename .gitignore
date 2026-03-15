@@ -31,5 +31,6 @@
 
 # ── Still ignore within tracked dirs ──
 container/projects/
+skills/gstack/
 **/__pycache__/
 .DS_Store

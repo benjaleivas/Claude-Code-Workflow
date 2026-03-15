@@ -3,6 +3,23 @@
 For EVERY non-trivial plan, follow this mandatory workflow:
 
 ## Phase 1: Structured Thinking
+
+### Scope Gear (standard planning only — not competing architectures)
+
+Before brainstorming approaches, select a scope gear. This changes the reviewer's posture for the entire plan:
+
+| Gear | Posture | When to use |
+|------|---------|-------------|
+| **EXPANSION** | "What would make this 10x better for 2x effort?" Find the 10-star product hiding in the request. Push ambition, identify delight opportunities, map the dream state. | New features, product direction decisions, early-stage product areas |
+| **HOLD SCOPE** | Accept the plan's scope as given. Maximize rigor — every failure mode, edge case, and integration point gets defensive treatment. | Bug fixes, well-scoped features, incremental improvements |
+| **REDUCTION** | "What's the absolute minimum that delivers user value?" Everything else defers. Surgeon's mindset — ruthless about cutting scope while preserving core outcome. | Tight deadlines, MVP features, unblocking work, when scope is creeping |
+
+Default to HOLD SCOPE if unclear. The user can override via AskUserQuestion in Phase 0 (see `session-lifecycle.md`).
+
+The scope gear persists through all 5 phases — brainstorm, questions, blueprint, devil's advocate, and proposal should all reflect the selected gear.
+
+### Brainstorming
+
 Use XML tags (`<brainstorm>`, `<analysis>`, `<decision>`) to explore the problem space before designing anything. The `<brainstorm>` tag MUST list 2-3 named approaches with trade-offs — see `~/.claude/rules/structured-thinking.md` for tag definitions. If the task was flagged for "competing architectures," these named approaches become the assignments for parallel agents in Phase 2.5.
 
 ## Phase 2: Clarifying Questions (MANDATORY)
@@ -75,12 +92,15 @@ If the task was NOT flagged for competing architectures, skip this phase entirel
 **Competing architectures path**: Phase 2.5 already produced the blueprint. Skip to Phase 4.
 
 **Standard path**: Create a detailed implementation plan. The `<brainstorm>` from Phase 1 already required 2-3 named approaches — the `<decision>` tag justifies the chosen one. Include:
+- **What Already Exists**: Before proposing new code, list existing functions, utilities, components, and patterns that solve sub-problems of this task. Reference file paths. This prevents reinventing what the codebase already has.
+- **NOT in Scope**: Explicitly document work that was considered but deferred. Each item gets a one-line rationale for why it's deferred. This is stronger than a vague "future work" section — it's a conscious scope boundary.
 - **Spec section (REQUIRED)**: data shapes, API contracts, DB constraints, external service behaviors, edge cases, success criteria. See `~/.claude/rules/spec-before-code.md`.
 - Files to modify with specific changes
 - Step-by-step execution sequence
 - Verification steps for each phase
 - Rollback strategy for risky changes
 - **Branch name**: `{type}/{description}` following the branching convention (see `branching-strategy.md`)
+- **Dream State** (EXPANSION gear or major features): Map `CURRENT STATE → THIS PLAN → 12-MONTH IDEAL`. What does this system look like in a year? How does this plan move toward that vision? Skip for HOLD SCOPE / REDUCTION gear unless the feature is foundational.
 - **Simplify scope note** (optional): if the plan intentionally uses verbose patterns for documented reasons (e.g., readability, explicit error handling), note it here so Step 2c (`/simplify`) does not undo deliberate choices
 - **ADR section** (for architectural decisions): when the plan involves choosing between fundamentally different approaches (database design, service architecture, state management strategy), document the decision in ADR format:
 

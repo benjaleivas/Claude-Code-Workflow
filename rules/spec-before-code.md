@@ -15,6 +15,22 @@ Before implementing any non-trivial task, outline the specification FIRST. This 
 3. **External behaviors**: How third-party services actually behave (not how you assume they do). Reference docs or paste exact response structures when possible.
 4. **Edge cases**: What happens on empty data, network failure, partial success, rate limits?
 5. **Success criteria**: How do we know this works? What does "done" look like?
+6. **Error & Rescue Map** (backend/API work): For every operation that can fail, document the failure path explicitly. Zero silent failures — every error must be visible to the system, the developer, or the user.
+
+### Error & Rescue Map Template
+
+For each function/endpoint that touches external services, databases, or user input:
+
+| Operation | Failure Mode | Error Type | Handling | User-Visible Impact |
+|-----------|-------------|------------|----------|-------------------|
+| `fetchBill()` | Congress.gov rate limit | `RateLimitError` | Retry with backoff (3 attempts) | "Loading..." → toast after 10s |
+| `fetchBill()` | Network timeout | `TimeoutError` | Return cached if available, else error | "Unable to reach Congress.gov" |
+| `saveDraft()` | Supabase RLS denied | `PostgrestError` (403) | Log + redirect to login | "Session expired, please sign in" |
+| ... | ... | ... | ... | ... |
+
+**When to include**: Any spec involving API calls, database writes, auth flows, or external service integration. Skip for pure UI/styling work.
+
+**Key principle**: If a row has "Handling: none" or "User-Visible Impact: silent", that's a gap. Every failure must either be handled or explicitly acknowledged as accepted risk.
 
 ## Where Specs Live
 - In plan mode: specs go in Phase 3 (Blueprint) as a required section

@@ -20,7 +20,11 @@ On the **first message** of every new session, present an interactive setup chec
 5. **Architecture complexity**: Ask whether this task is architecturally ambiguous (multiple viable approaches, high cost of choosing wrong). Use AskUserQuestion:
    - **Standard planning** (default) — single agent with explicit divergence. `<brainstorm>` must list 2-3 named approaches before committing to one.
    - **Competing architectures** — 2-3 parallel Plan agents, each building a full blueprint for a different architectural direction. User picks the winner or synthesizes. See `plan-mode-workflow.md` Phase 2.5.
-6. **Plan mode**: Enter plan mode for the task. Follow `plan-mode-workflow.md`.
+6. **Scope gear** (standard planning only — skip if competing architectures): Ask the user's intent via AskUserQuestion. See `plan-mode-workflow.md` Phase 1 for full definitions.
+   - **HOLD SCOPE** (default) — maximize rigor within the given scope
+   - **EXPANSION** — find the 10-star product, push ambition, map the dream state
+   - **REDUCTION** — absolute minimum that delivers user value, cut everything else
+7. **Plan mode**: Enter plan mode for the task. Follow `plan-mode-workflow.md`.
 
 Present this as an interactive flow, prompting the user at each decision point (folder, worktree yes/no, branch name if manual).
 
@@ -142,7 +146,7 @@ Session Start
   └─ Non-trivial:
        │
        ├─ Create worktree (isolate work)
-       ├─ Enter plan mode
+       ├─ Enter plan mode (with scope gear: HOLD / EXPANSION / REDUCTION)
        │    ├─ Standard: think → questions → blueprint → devil's advocate → propose
        │    └─ Competing: think → questions → 2-3 parallel plans → pick/synthesize → devil's advocate → propose
        │

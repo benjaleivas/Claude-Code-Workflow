@@ -4,13 +4,28 @@ description: Visually verify UI changes in the browser. Use after frontend or UI
 
 Visually verify UI changes in the browser.
 
-**Preferred**: If `.claude/launch.json` exists and `preview_*` tools are available, use the preview server (no Chrome needed). Otherwise, fall back to Chrome integration.
+**Priority order**:
+1. **gstack browse daemon** (fastest, lowest context cost) — if `~/.claude/skills/gstack/browse/dist/browse` exists
+2. **Claude Preview** — if `.claude/launch.json` exists and `preview_*` tools are available
+3. **Chrome MCP** — fallback if neither above is available
 
 ---
 
 ## Instructions
 
-### Step 0: Check for Preview Server
+### Step 0a: Check for gstack Browse Daemon
+If `~/.claude/skills/gstack/browse/dist/browse` exists:
+1. Set browse binary with Bun in PATH: `export PATH="$HOME/.bun/bin:$PATH" && B=~/.claude/skills/gstack/browse/dist/browse`
+2. Navigate: `$B goto <url>` (daemon auto-starts on first call, ~3s; subsequent calls ~100-200ms)
+3. Snapshot: `$B snapshot -i` — shows page structure with interactive element refs (`@e1`, `@e2`, etc.)
+4. Screenshot: `$B screenshot <output-path>` — captures full page
+5. Console errors: `$B console --level error`
+6. Network failures: `$B network --failed`
+7. Skip to Step 5 (Report)
+
+Note: Browse daemon persists between calls (30-min idle timeout). Cookies, tabs, and localStorage carry over. For authenticated testing, use `$B cookie-import-browser <domain>` to import cookies from a real browser.
+
+### Step 0b: Check for Preview Server
 If `.claude/launch.json` exists and `preview_*` MCP tools are available:
 1. Start the preview server with `preview_start` (if not already running)
 2. Use `preview_screenshot` for visual check
@@ -20,8 +35,8 @@ If `.claude/launch.json` exists and `preview_*` MCP tools are available:
 6. Skip to Step 5 (Report) — Chrome is not needed
 
 ### Step 1: Check Chrome Connection (fallback)
-If no preview server is available, verify Chrome integration. If not connected:
-- Tell the user: "No preview server configured and Chrome is not connected. Either add `.claude/launch.json` or run `claude --chrome` to enable browser verification."
+If neither browse daemon nor preview server is available, verify Chrome integration. If not connected:
+- Tell the user: "No browse daemon, preview server, or Chrome connection available. Install gstack browse (`~/.claude/skills/gstack/`), add `.claude/launch.json`, or run `claude --chrome`."
 - Stop here.
 
 ### Step 2: Determine URL
