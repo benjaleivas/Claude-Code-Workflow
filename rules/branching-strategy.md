@@ -128,3 +128,25 @@ Worktrees persist after sessions end as reference-only archives. They are NOT de
 - **On-demand management**: `/worktrees` for listing, browsing, and cleanup
 - **Cross-worktree context**: browse `{worktree}/.claude/plans/` and `{worktree}/.claude/session-logs/` to recover reasoning from past work
 - **Storage rule**: code and reasoning are cheap to keep. node_modules are expensive and recoverable. Prune dependencies, preserve decisions.
+
+## Conductor Workspaces
+
+Conductor creates isolated workspace copies of the repo (NOT git worktrees). Each workspace has its own branch.
+
+- **Detection**: `$CONDUCTOR_WORKSPACE_PATH` env var is set
+- **Naming**: `benjaleivas/{description}` (Conductor's system prompt instructs the agent to rename the branch)
+- **No `git worktree move`**: Use `git branch -m` for renames instead
+- **Workspace location**: `~/conductor/workspaces/{RepoName}/{city-name}/`
+- **Setup**: `scripts/conductor-setup.sh` handles dependency installation and .env symlinking
+- **Run**: `scripts/conductor-run.sh` starts the dev server on `$CONDUCTOR_PORT`
+- **Config**: `conductor.json` at repo root (committed, version-controlled)
+
+### Key Differences from Worktrees
+
+| Aspect | Git Worktree | Conductor Workspace |
+|--------|-------------|-------------------|
+| Detection | `git rev-parse --git-common-dir` ≠ `--git-dir` | `$CONDUCTOR_WORKSPACE_PATH` is set |
+| Mechanism | Shared `.git` directory | Full repo copy |
+| Branch rename | `git worktree move` | `git branch -m` |
+| Cleanup | `git worktree remove` | Archive in Conductor UI |
+| Setup | `worktree-setup.sh` hook | `conductor-setup.sh` script |

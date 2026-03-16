@@ -6,18 +6,21 @@ This protocol auto-activates after any plan is approved. It sequences the existi
 
 ### Step 0: BRANCH
 Ensure work happens on a feature branch (see `branching-strategy.md`):
-1. Check if in a worktree (`git rev-parse --git-common-dir` vs `--git-dir`) — if they differ, skip (worktrees are pre-branched)
-2. Check current branch: `git branch --show-current`
-3. If on main/master with a clean working tree:
+1. **Conductor workspace?** Check `$CONDUCTOR_WORKSPACE_PATH`. If set, branch already exists (Conductor created it). Rename with `git branch -m benjaleivas/{description}` if the current name doesn't match the plan. Skip to Step 1.
+2. Check if in a worktree (`git rev-parse --git-common-dir` vs `--git-dir`) — if they differ, skip (worktrees are pre-branched)
+3. Check current branch: `git branch --show-current`
+4. If on main/master with a clean working tree:
    - `git pull --ff-only` (if remote exists, skip if offline)
    - `git checkout -b {type}/{description}` using the branch name from the plan
-4. If already on the correct feature branch, continue
-5. If on a wrong feature branch, warn the user before proceeding
+5. If already on the correct feature branch, continue
+6. If on a wrong feature branch, warn the user before proceeding
 
 Skip this step if the task is a quick fix (no plan mode, single-file change).
 
-### Step 0a: RENAME WORKTREE
-If working in a worktree (detected in Step 0), rename it to match the plan:
+### Step 0a: RENAME WORKTREE / BRANCH
+**Conductor workspace**: Branch rename handled in Step 0 (via `git branch -m`). Skip this step.
+
+**Git worktree**: If working in a worktree (detected in Step 0), rename it to match the plan:
 1. Derive a descriptive name from the plan's branch name or description (e.g., `feature/dark-mode-toggle` → `dark-mode-toggle`)
 2. Compute the new path: replace the last path segment of the current worktree path
 3. Run: `git worktree move "$(pwd)" "<new-path>"`

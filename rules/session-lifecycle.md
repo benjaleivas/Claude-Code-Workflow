@@ -6,6 +6,15 @@ The full lifecycle of a Claude Code session, from start to cleanup. This governs
 
 On the **first message** of every new session, present an interactive setup checklist. Use AskUserQuestion for key decisions.
 
+### Conductor Workspace Detection
+
+If `$CONDUCTOR_WORKSPACE_PATH` is set, the session is inside a Conductor workspace:
+- **Skip worktree suggestion** — the workspace IS the isolation
+- **Skip branch creation** — Conductor already created the branch
+- **Branch rename**: Use `git branch -m benjaleivas/{description}` (not `git worktree move`)
+- **Proceed directly to plan mode** after checking MEMORY.md
+- All slash commands, agents, hooks, and skills work as-is in Conductor workspaces
+
 ### For Non-Trivial Tasks (features, bugs, multi-file changes)
 
 1. **Project**: Confirm the working directory. If no project CLAUDE.md exists, offer to scaffold one (see `new-project-setup.md`).
@@ -15,7 +24,7 @@ On the **first message** of every new session, present an interactive setup chec
    - Bug / error → debugger pattern, worktree if multi-file
    - Exploration / prototype → suggest `/explore`
    - Risky / data-heavy → suggest `/container`
-4. **Worktree**: Ask the user to create a worktree (Desktop: worktree button; CLI: `claude --worktree` or `/worktree`). This isolates the work and auto-creates a feature branch.
+4. **Worktree**: Ask the user to create a worktree (Desktop: worktree button; CLI: `claude --worktree` or `/worktree`). This isolates the work and auto-creates a feature branch. In Conductor, skip this — the workspace already provides isolation.
    - If the user declines, fall back to manual branch creation in the orchestrator Step 0.
 5. **Architecture complexity**: Ask whether this task is architecturally ambiguous (multiple viable approaches, high cost of choosing wrong). Use AskUserQuestion:
    - **Standard planning** (default) — single agent with explicit divergence. `<brainstorm>` must list 2-3 named approaches before committing to one.

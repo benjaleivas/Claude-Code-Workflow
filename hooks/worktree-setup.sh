@@ -3,6 +3,9 @@
 # Detects if we're in a git worktree that hasn't been fully set up yet.
 # If so: installs dependencies and copies .env files from the main repo.
 
+# Skip in Conductor workspaces — setup script handles this
+[ -n "$CONDUCTOR_WORKSPACE_PATH" ] && exit 0
+
 INPUT=$(cat)
 CWD=$(echo "$INPUT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('cwd',''))" 2>/dev/null)
 
