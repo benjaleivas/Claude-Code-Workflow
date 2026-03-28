@@ -41,8 +41,10 @@ TODO.md is updated on main during Phase 5 cleanup (after PR merge). See `session
 ### Step 1: IMPLEMENT
 Execute plan steps. Work through the blueprint systematically. If the plan has a spec section, reference it continuously during implementation.
 
-### Step 2: VERIFY
+### Step 2: VERIFY (evidence required)
 Run the project's verification command (defined in project CLAUDE.md). If none exists, run the type checker or test suite at minimum. If verification fails, fix and re-verify before proceeding.
+
+**Evidence rules**: Show exact pass/fail counts. No hedging language. Must be fresh (run after latest change). See `anti-rationalization.md` for the full list of verification red flags.
 
 ### Step 2b: VISUAL VERIFY (frontend/UI changes only)
 If the plan involved UI changes:
@@ -86,6 +88,30 @@ This is advisory, not mandatory. The user can decline. Skip if:
 - The project has no existing test infrastructure
 - The user explicitly stated no tests needed
 
+### Step 2f: ACCEPTANCE GATE (mandatory for plan-mode tasks)
+A separate evaluator checks the implementation against the plan's acceptance criteria. This is **structural, not optional** — it runs before review, not as a user-chosen action. Inspired by the GAN-pattern finding that agents reliably praise their own work; separation of generator and evaluator is the fix.
+
+1. **Spawn an evaluator agent** (model: `opus` for 3+ file changes, `sonnet` otherwise) with:
+   - The plan's acceptance criteria (from the spec section — these are the single source of truth)
+   - `git diff` of all changes
+   - Access to the running application (if applicable — use browser tools or curl)
+2. **The evaluator checks each acceptance criterion** individually:
+   - PASS: criterion is met, with evidence (e.g., "tested endpoint X, returned expected shape Y")
+   - FAIL: criterion is not met, with specific finding (e.g., "delete button exists but clicking it returns 500 — error handler missing in route.ts:45")
+3. **Hard gate with iteration limit**: If ANY criterion fails, fix the failed items and re-run the gate. **Maximum 2 rounds**. After 2 failed rounds, surface all remaining findings to the user and let them decide whether to override or continue fixing. This prevents infinite ping-pong between implementer and evaluator.
+4. **Evaluator must be skeptical**: Prompt it to actively look for gaps, not confirm success. Include: "Your job is to find what's broken, not validate what works. If you find yourself writing 'looks good' — look harder."
+5. **Log the evaluator's findings** in the session log.
+6. **Note on locked interfaces**: Locked interfaces from the plan (exact types/signatures) are enforced by implementer discipline during Step 1, not by this gate. The gate checks behavioral acceptance criteria. If you changed a locked interface during implementation, note the deviation in the session log with justification.
+
+**After review**: If Step 3 (review) or Step 4 (fix) produces significant changes, the gate results may be stale. Re-run the gate if review fixes touched functionality covered by acceptance criteria. Minor fixes (formatting, naming, style) don't require a re-run.
+
+**Skip when**:
+- Quick fix (no plan, no spec, no acceptance criteria to check against)
+- Pure library code where Step 2 (test suite) already covers all acceptance criteria
+- User explicitly opts out
+
+When skipped, mark as `[~]` in the execution checklist with justification.
+
 ### Step 3: REVIEW
 In Desktop: suggest the built-in diff view + **Review code** button for inline feedback. In CLI: suggest `/review` for uncommitted changes. For complex work (3+ files, architectural changes, security-sensitive code), suggest `/grill` instead. For automated fix iteration (critic finds issues, you fix, critic re-audits), suggest `/qa`.
 
@@ -127,6 +153,7 @@ See `session-lifecycle.md` Phase 3 for the full action menu table and decision l
 - [x/~/ ] Feature branch or worktree created (or quick fix on main — justified)
 - [x/~/ ] Verification passed (command: `...`)
 - [x/~/ ] `/simplify` run on changes (auto-fix applied, suggestions resolved)
+- [x/~/ ] Acceptance gate passed (evaluator checked criteria, or N/A — quick fix / <3 criteria)
 - [x/~/ ] `/review` run on changes
 - [x/~/ ] `/grill` run (if 3+ files or architectural/security changes)
 - [x/~/ ] All review findings addressed

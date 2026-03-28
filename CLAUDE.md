@@ -155,7 +155,7 @@ These files contain detailed patterns extracted from this document. They auto-lo
 - **Session Lifecycle** — `session-lifecycle.md` — Full session lifecycle: setup checklist → planning → execution → satisfaction check → ship → cleanup. Governs every session across all projects.
 - **Structured Thinking** — `structured-thinking.md` — XML tags (`<brainstorm>`, `<analysis>`, `<decision>`) and anti-hallucination verification. MANDATORY for plan mode.
 - **Plan Mode Workflow** — `plan-mode-workflow.md` — 5-phase workflow (Thinking → Questions → Blueprint with specs → Devil's Advocate → Propose). Plans saved to disk. Orchestrator activates after approval.
-- **Orchestrator Protocol** — `orchestrator-protocol.md` — Post-plan execution loop: implement → verify → /review → fix → re-verify → /commit. Uses existing slash commands. Includes optional agent sequences for feature/bugfix/refactor workflows.
+- **Orchestrator Protocol** — `orchestrator-protocol.md` — Post-plan execution loop: implement → verify → **acceptance gate** → /review → fix → re-verify → /commit. Includes mandatory evaluator agent for plan-mode tasks. Uses existing slash commands. Includes optional agent sequences for feature/bugfix/refactor workflows.
 - **Spec Before Code** — `spec-before-code.md` — Data shapes, contracts, edge cases, success criteria. Required in plan Phase 3 and via `/spec`. Includes research phase (MCP-first → registries → GitHub) before choosing tools/libraries.
 - **Subagent Patterns** — `subagent-patterns.md` — Debugger, Code Reviewer, Security Reviewer, Bug Fixer, Agent Teams, Model Selection.
 - **Custom Agents** — `~/.claude/agents/` — Architect, Code Reviewer, Debugger, Security Reviewer, Test Writer, Supabase Specialist, Expo Specialist. All have persistent memory.
@@ -166,3 +166,4 @@ These files contain detailed patterns extracted from this document. They auto-lo
 - **Context Management** — `context-management.md` — MCP context budget, context hygiene, pre-compaction checklist, recovery after compaction.
 - **Branching Strategy** — `branching-strategy.md` — Feature branch convention, orchestrator Step 0, quick fix exemption, cleanup.
 - **AskUserQuestion Convention** — `ask-user-questions.md` — Always recommend one option, explain trade-offs, justify the recommendation.
+- **Anti-Rationalization** — `anti-rationalization.md` — Iron Laws, red flag thought patterns, rationalization tables. Referenced by orchestrator, plan workflow, and structured thinking. Prevents process-skipping.

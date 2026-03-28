@@ -95,6 +95,8 @@ If the task was NOT flagged for competing architectures, skip this phase entirel
 - **What Already Exists**: Before proposing new code, list existing functions, utilities, components, and patterns that solve sub-problems of this task. Reference file paths. This prevents reinventing what the codebase already has.
 - **NOT in Scope**: Explicitly document work that was considered but deferred. Each item gets a one-line rationale for why it's deferred. This is stronger than a vague "future work" section — it's a conscious scope boundary.
 - **Spec section (REQUIRED)**: data shapes, API contracts, DB constraints, external service behaviors, edge cases, success criteria. See `~/.claude/rules/spec-before-code.md`.
+- **Locked interfaces** (for critical sections): Shared contracts must include **exact type definitions and function signatures** in the plan — not just descriptions. Examples: data models, API request/response types, auth flow types, component prop types for shared components, hook return types, context shapes. Implementation fills in the bodies, but interfaces are locked at plan time. This prevents implementation drift on the pieces that matter most. Enforced by implementer discipline (not the evaluator gate — see orchestrator Step 2f note). Skip for changes that don't export types or functions consumed by other modules.
+- **Note on acceptance criteria format**: The spec section's success criteria (required by `spec-before-code.md`) double as the acceptance contract for the evaluator gate (orchestrator Step 2f). Write them as **binary pass/fail** criteria specific enough that an agent with access to the running app can verify without ambiguity. Bad: "auth works." Good: "POST /api/login with valid credentials returns 200 + session cookie; invalid credentials returns 401 with error message." There is one source of truth — the spec's success criteria — not a separate "contract."
 - Files to modify with specific changes
 - Step-by-step execution sequence
 - Verification steps for each phase
@@ -160,7 +162,8 @@ After user approval, the orchestrator protocol activates automatically (see `~/.
 ### Planning Checklist
 - [x/~/ ] Structured thinking (`<brainstorm>`, `<analysis>`, `<decision>`)
 - [x/~/ ] Clarifying questions (MANDATORY — AskUserQuestion called, user confirmed scope)
-- [x/~/ ] Spec section (data shapes, contracts, edge cases, success criteria)
+- [x/~/ ] Spec section (data shapes, contracts, edge cases, success criteria as binary pass/fail for evaluator gate)
+- [x/~/ ] Locked interfaces (exact types/signatures for critical sections, or N/A)
 - [x/~/ ] Plan saved to disk (`{project}/.claude/plans/...`)
 - [x/~/ ] Devil's advocate (findings: N accepted, N dismissed, N deferred)
 - [x/~/ ] Verification strategy defined

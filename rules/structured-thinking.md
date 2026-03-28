@@ -42,3 +42,12 @@ Before finalizing any plan, verify assumptions against reality:
 - Read: confirm current implementation before proposing changes
 - Grep: check for existing patterns to follow or reuse
 - Never plan modifications to files you haven't read or patterns you haven't verified exist
+
+## Anti-Rationalization (see `anti-rationalization.md`)
+
+During planning, watch for these red flags in your own reasoning:
+- **Anchoring**: Committing to Approach A before fully exploring B and C. The `<brainstorm>` tag exists to prevent this — if you're rushing through it, slow down.
+- **Scope creep disguised as thoroughness**: Adding features the plan doesn't need. Check against the scope gear (HOLD / EXPANSION / REDUCTION).
+- **Premature commitment**: Writing implementation details in the `<brainstorm>` tag. Brainstorm explores, analysis evaluates, decision commits — in that order.
+- **Skipping the `<analysis>` tag**: Going straight from brainstorm to decision. If you can't articulate why the alternatives were rejected with evidence, you haven't analyzed them.
+- **Confidence without verification**: "I know this pattern well" is not a substitute for reading the current implementation. Verify, then plan.
