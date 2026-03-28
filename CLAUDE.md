@@ -102,6 +102,17 @@ When a mistake is caught or a correction is made, persist it:
 ```
 Written to project-level `{project}/.claude/MEMORY.md`. Only for corrections that would recur. Check MEMORY.md before implementing in a domain. See `~/.claude/rules/learn-system.md`.
 
+## Communication Style
+- Match the length and specificity of my message. If I write one sentence, respond in kind.
+- Do not expand scope beyond what was explicitly asked. If you see related improvements, mention them in one line — don't implement them.
+- When I ask for concise output, be concise. No full writeups when only names/summaries are requested.
+
+## Git Context Verification
+- Before any `git commit`, `git push`, or `gh pr create`: confirm which repo you're in with `git remote -v`.
+- Files in `~/.claude/` are NOT in the current project repo — they belong to the Claude-Code-Workflow repo.
+- If working in a worktree, verify the worktree path matches the project you're working on.
+- Never assume the current directory is the target repo. Check first.
+
 ## Code Style Preferences
 - Prefer `type` over `interface` in TypeScript
 - Never use `enum` — use string literal unions
