@@ -118,6 +118,8 @@ Sources that informed this workflow:
 | [OWASP Top 10](https://owasp.org/www-project-top-ten/) | OWASP Foundation | Security reviewer vulnerability checklist |
 | [frontend-slides](https://github.com/zarazhangrui/frontend-slides) | zarazhangrui | HTML presentation generator |
 | [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | nextlevelbuilder | UI/UX design intelligence skill |
+| [Harness Design for Long-Running Apps](https://www.anthropic.com/engineering/harness-design-long-running-apps) | Anthropic (Prithvi Rajasekaran) | GAN-pattern evaluator gate, self-evaluation problem, harness simplification as models improve |
+| [Superpowers](https://github.com/obra/superpowers) | Jesse Vincent (obra) | Anti-rationalization tables, red flag patterns, iron laws, evidence-based verification, TDD enforcement |
 
 ## License
 
