@@ -7,8 +7,10 @@ A structured workflow system for [Claude Code](https://docs.anthropic.com/en/doc
 Claude Code doesn't impose structure on its own. This workflow adds:
 
 1. **Plan first, then execute.** Non-trivial tasks go through structured thinking, specs, and a devil's advocate review before any code is written.
-2. **Automate the quality loop.** Hooks format code, scan for secrets, and protect sensitive files on every edit. The orchestrator sequences verification, review, and cleanup after plan approval.
-3. **Compound corrections over time.** `[LEARN]` tags persist mistakes so they're never repeated. Session logs survive context compression. Worktrees archive decisions for future reference.
+2. **Separate generator from evaluator.** A mandatory acceptance gate spawns a separate agent to verify implementation against spec criteria — because agents reliably praise their own work.
+3. **Automate the quality loop.** Hooks format code, scan for secrets, and protect sensitive files on every edit. The orchestrator sequences verification, acceptance gate, review, and cleanup after plan approval.
+4. **Resist rationalization.** Iron laws, red flag thought patterns, and rationalization tables prevent process-skipping. Evidence-based verification — no hedging language, show exact pass/fail counts.
+5. **Compound corrections over time.** `[LEARN]` tags persist mistakes so they're never repeated. Session logs survive context compression. Worktrees archive decisions for future reference.
 
 ## Get Started
 
@@ -30,7 +32,7 @@ New session → classify task
 │
 └─ Non-trivial
    └─ worktree → plan (with scope gear) → approve → orchestrator:
-      implement → verify → simplify → review → fix → commit → PR → cleanup
+      implement → verify → simplify → acceptance gate → review → fix → commit → PR → cleanup
 ```
 
 Once you approve a plan, the orchestrator drives the entire loop — you don't run each step manually.
@@ -56,8 +58,11 @@ Define how Claude thinks, plans, and works. Key rules:
 - **Structured thinking** — `<brainstorm>` → `<analysis>` → `<decision>` tags before committing to an approach
 - **Plan mode** — 5-phase workflow: think → ask → spec → devil's advocate → propose
 - **Scope gears** — EXPANSION / HOLD SCOPE / REDUCTION to set planning posture
-- **Orchestrator** — automates the post-plan execute-verify-review-ship loop
-- **Spec before code** — data shapes, contracts, edge cases, error & rescue maps upfront
+- **Orchestrator** — automates the post-plan loop with mandatory acceptance gate
+- **Anti-rationalization** — iron laws, red flag patterns, rationalization tables to prevent process-skipping
+- **Acceptance gate** — separate evaluator agent checks implementation against spec criteria (max 2 rounds, then escalates to user)
+- **Locked interfaces** — exact type definitions and function signatures frozen at plan time to prevent implementation drift
+- **Spec before code** — data shapes, contracts, edge cases, error & rescue maps, binary pass/fail acceptance criteria
 - **Session logging** — reasoning persisted to disk (survives context compression)
 - **[LEARN] system** — tagged corrections that compound across sessions
 - **Branching strategy** — `feature/`, `fix/`, `chore/` with automatic creation and cleanup
