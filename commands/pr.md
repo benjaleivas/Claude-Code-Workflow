@@ -41,7 +41,10 @@ If the required CLI is not installed:
      ## Test plan
      - [ ] how to verify this works
      ```
-8. Print the PR URL
+8. Enable auto-merge: `gh pr merge --squash --auto`
+   - This tells GitHub to squash-merge automatically once all required checks pass
+   - Print confirmation: "Auto-merge enabled — PR will merge when CI passes."
+9. Print the PR URL
 
 ### GitLab: Create MR
 5. Check for existing MR: `glab mr view 2>/dev/null`
